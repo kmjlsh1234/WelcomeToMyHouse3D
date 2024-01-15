@@ -11,8 +11,10 @@ namespace Assets.Scripts.Player
         [SerializeField] float _speed;
         [SerializeField] float _normalSpeed = 5f;
         [SerializeField] float _runSpeed = 10f;
-        // 마우스 회전
-        private float xRotate = 0.0f; // 내부 사용할 X축 회전량은 별도 정의 ( 카메라 위 아래 방향 )
+        [SerializeField] private float lookSensitivity;
+        [SerializeField] private float cameraRotationLimit;
+        private float currentCameraRotationX;
+
         Rigidbody body; // Rigidbody를 가져올 변수
 
         [Header("Interaction")]
@@ -21,6 +23,10 @@ namespace Assets.Scripts.Player
 
         [HideInInspector] public bool _canMove = true;
         [HideInInspector] public bool _canRotate = true;
+
+
+        [SerializeField] private Transform _camera;
+        
 
         void Start()
         {
@@ -38,10 +44,11 @@ namespace Assets.Scripts.Player
         #region :::: PlayerMove
         void Move()
         {
+#if UNITY_EDITOR
             //  키보드에 따른 이동량 측정
-            Vector3 move =
-                transform.forward * Input.GetAxis("Vertical") +
-                transform.right * Input.GetAxis("Horizontal");
+            float h = Input.GetAxis("Horizontal");
+            float v = Input.GetAxis("Vertical");
+            Vector3 mov = new Vector3(h, 0, v);
 
             // 이동량을 좌표에 반영
             if (Input.GetKey(KeyCode.LeftShift))
@@ -49,25 +56,32 @@ namespace Assets.Scripts.Player
             else
                 _speed = _normalSpeed;
 
-            transform.position += move * _speed * Time.deltaTime;
-
+            this.transform.Translate(mov * Time.deltaTime * _speed);           
+#endif
         }
 
         void Rotate()
         {
-            // 좌우로 움직인 마우스의 이동량 * 속도에 따라 카메라가 좌우로 회전할 양 계산
-            float yRotateSize = Input.GetAxis("Mouse X") * turnSpeed;
-            // 현재 y축 회전값에 더한 새로운 회전각도 계산
-            float yRotate = transform.eulerAngles.y + yRotateSize;
+            CameraRotation();
+            CharacterRotation();
+        }
 
-            // 위아래로 움직인 마우스의 이동량 * 속도에 따라 카메라가 회전할 양 계산(하늘, 바닥을 바라보는 동작)
-            float xRotateSize = -Input.GetAxis("Mouse Y") * turnSpeed;
-            // 위아래 회전량을 더해주지만 -45도 ~ 80도로 제한 (-45:하늘방향, 80:바닥방향)
-            // Clamp 는 값의 범위를 제한하는 함수
-            xRotate = Mathf.Clamp(xRotate + xRotateSize, -45, 80);
+        private void CameraRotation()
+        {
+            float _xRotation = Input.GetAxisRaw("Mouse Y");
+            float _cameraRotationX = _xRotation * lookSensitivity;
 
-            // 카메라 회전량을 카메라에 반영(X, Y축만 회전)
-            transform.eulerAngles = new Vector3(xRotate, yRotate, 0);
+            currentCameraRotationX -= _cameraRotationX;
+            currentCameraRotationX = Mathf.Clamp(currentCameraRotationX, -cameraRotationLimit, cameraRotationLimit);
+
+            _camera.localEulerAngles = new Vector3(currentCameraRotationX, 0f, 0f);
+        }
+
+        private void CharacterRotation()  // 좌우 캐릭터 회전
+        {
+            float _yRotation = Input.GetAxisRaw("Mouse X");
+            Vector3 _characterRotationY = new Vector3(0f, _yRotation, 0f) * lookSensitivity;
+            body.MoveRotation(body.rotation * Quaternion.Euler(_characterRotationY)); // 쿼터니언 * 쿼터니언
         }
         #endregion
 

@@ -468,6 +468,104 @@ Transform:
   m_Father: {fileID: 1589784243}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &410547527
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 410547531}
+  - component: {fileID: 410547530}
+  - component: {fileID: 410547529}
+  - component: {fileID: 410547528}
+  m_Layer: 0
+  m_Name: Plane
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!64 &410547528
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 410547527}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &410547529
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 410547527}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &410547530
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 410547527}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &410547531
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 410547527}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 10, y: 1, z: 10}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &630246259
 GameObject:
   m_ObjectHideFlags: 0
@@ -746,11 +844,11 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &1113297804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -767,9 +865,12 @@ MonoBehaviour:
   _speed: 0
   _normalSpeed: 5
   _runSpeed: 10
+  lookSensitivity: 5
+  cameraRotationLimit: 60
   MaxDistance: 0
   _canMove: 1
   _canRotate: 1
+  _camera: {fileID: 963194228}
 --- !u!136 &1113297805
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -842,7 +943,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1113297802}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -969,7 +1070,7 @@ MonoBehaviour:
   openPrefabs: 0
   prefabs: []
   idRef:
-    _Keys: d0be233201f8b857c5335d292943977bd9b6333a017fb71b569662a43d6e6a75a1d6b9ced34e4a6b2eb6e3ccc5a24a10444e851799763650060788975a5c9434632d78ac763658746bc80c4a9ceb55078fa5fd68def1d6481e8d16740c7ef02b619638343a4dee2e21af2ef21bf7867b53dcc95ecdcdb137a6faabd16aebb31bb28078cd4620281f1ea34cdffd233a47b63a29edbc62ec27f96432ee2de03f4bb5ab19443a448b007af0ef41bc9a873534f21a30c2c65e4f6cae3954ade9b23d9cfe6a56c2807e7252d79952add21c5e97ab2228f1beff790d8a7c6abd6db9066ab472603b22bc72087d3bdeb2dc814b4ac3d060376b67535901a9dcb315093ebf3a676389856f18ad62d1e954eb2c7f1d358f512e087a1212e9b89de1b66f5fcd0e2072d2cbdc6cb128e7aab71d8545d2d607165ba59337b47974723d0df90af3721d45cab9ad515a220356ef24c92e6ffdcb0aaf580427d22362d6c534f0172ab5bd38a13c472742a3e13ad904ba656ff5cae29260110b79a785ccc1f269395f00701cd01aca2a2237973095f17a375b4d3f0548849a350c1a488de5b4005d8f74be6d2ed1246c8d50100775663000
+    _Keys: d0be233201f8b857c5335d292943977bd9b6333a017fb71b569662a43d6e6a75a1d6b9ced34e4a6b2eb6e3ccc5a24a10444e851799763650060788975a5c9434632d78ac763658746bc80c4a9ceb55078fa5fd68def1d6481e8d16740c7ef02b619638343a4dee2e21af2ef21bf7867b53dcc95ecdcdb137a6faabd16aebb31bb28078cd4620281f1ea34cdffd233a47b63a29edbc62ec27f96432ee2de03f4bb5ab19443a448b007af0ef41bc9a873534f21a30c2c65e4f6cae3954ade9b23d9cfe6a56c2807e7252d79952add21c5e97ab2228f1beff790d8a7c6abd6db9066ab472603b22bc72087d3bdeb2dc814b4ac3d060376b67535901a9dcb315093ebf3a676389856f18ad62d1e954eb2c7f1d358f512e087a1212e9b89de1b66f5fcd0e2072d2cbdc6cb128e7aab71d8545d2d607165ba59337b47974723d0df90af3721d45cab9ad515a220356ef24c92e6ffdcb0aaf580427d22362d6c534f0172ab5bd38a13c472742a3e13ad904ba656ff5cae29260110b79a785ccc1f269395f00701cd01aca2a2237973095f17a375b4d3f0548849a350c1a488de5b4005d8f74be6d2ed1246c8d50100775663000266552daca0b1a5dfeca584bbfc6527dbd371ac3bbc4bb17c3cd162204f61b5f091276090b65322f0f0e7af5f359cb392f0911b07734b711f49291821af8700b130bf790d626e3574d7ef8d90666b34e2a0433c46db94738da09fbff1ac213159f6ee2e7623b6208d9469b06c421f57321bc52e0d3ca8634acd04832d51cc275
     _Values:
     - {fileID: 963194225}
     - {fileID: 963194228}
@@ -1025,3 +1126,19 @@ MonoBehaviour:
     - {fileID: 39995953}
     - {fileID: 11500000, guid: 9a83408fcc9044c4fbc7e5d09a369ab6, type: 3}
     - {fileID: 11500000, guid: 9107aee0ced90422da95f0b31680501f, type: 3}
+    - {fileID: 410547531}
+    - {fileID: 410547527}
+    - {fileID: 410547530}
+    - {fileID: 410547529}
+    - {fileID: 410547528}
+    - {fileID: 963194225}
+    - {fileID: 963194228}
+    - {fileID: 963194227}
+    - {fileID: 963194226}
+    - {fileID: 1113297808}
+    - {fileID: 1113297802}
+    - {fileID: 1113297807}
+    - {fileID: 1113297806}
+    - {fileID: 1113297805}
+    - {fileID: 1113297804}
+    - {fileID: 1113297803}
