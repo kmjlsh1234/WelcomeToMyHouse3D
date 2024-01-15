@@ -26,9 +26,9 @@ namespace Assets.Scripts.Player
 
 
         [SerializeField] private Transform _camera;
-        
 
-        void Start()
+        private BoxCollider _interactBoxCollider;
+        private void Awake()
         {
             body = GetComponent<Rigidbody>();           // Rigidbody를 가져온다.
             transform.rotation = Quaternion.identity;   // 회전 상태를 정면으로 초기화
