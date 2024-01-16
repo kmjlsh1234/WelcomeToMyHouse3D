@@ -8,6 +8,7 @@ namespace Assets.Scripts.Player
     public class PlayerController : MonoBehaviour
     {
         [Header("PlayerMove&Rotate")]
+        [SerializeField] float turnSpeed = 4.0f; // 마우스 회전 속도
         [SerializeField] float _speed;
         [SerializeField] float _normalSpeed = 5f;
         [SerializeField] float _runSpeed = 10f;
@@ -18,7 +19,8 @@ namespace Assets.Scripts.Player
         Rigidbody body; // Rigidbody를 가져올 변수
 
         [Header("Interaction")]
-        [SerializeField] private float _maxDistance;
+        [SerializeField] private float MaxDistance;
+        private RaycastHit hit;
 
         [HideInInspector] public bool _canMove = true;
         [HideInInspector] public bool _canRotate = true;
@@ -34,13 +36,9 @@ namespace Assets.Scripts.Player
 
         void Update()
         {
+            if(_canMove) Move();
             if (_canRotate) Rotate();
             if (Input.GetKeyDown(KeyCode.Space)) Interaction();
-        }
-
-        private void FixedUpdate()
-        {
-            if (_canMove) Move();
         }
 
         #region :::: PlayerMove
@@ -90,18 +88,31 @@ namespace Assets.Scripts.Player
         #region :::: Interaction
         private void Interaction()
         {
-            Ray ray = new Ray(_camera.transform.position, _camera.transform.forward);
-            RaycastHit hit;
+            Vector3 cameraPosition = _camera.position;
+            Vector3 cameraForward = _camera.forward;
 
-            if (Physics.Raycast(ray, out hit, _maxDistance))
+            // 아이템을 찾을 위치 계산
+            Vector3 checkPosition = cameraPosition + cameraForward * MaxDistance;
+
+            // 레이캐스트를 이용하여 아이템 검사
+            RaycastHit hit;
+            if (Physics.Raycast(checkPosition, cameraForward, out hit, Mathf.Infinity))
             {
-                if (hit.collider.tag == "Item")
+                // 아이템을 찾았을 경우
+                if (hit.collider.CompareTag("Item"))
                 {
-                    Debug.Log("Hit object: " + hit.collider.gameObject.name);
-                    ItemBase item = hit.collider.gameObject.transform.GetComponent<ItemBase>();
-                    item.InteractionStart();
-                }                
+                    Debug.Log("아이템 발견: " + hit.collider.gameObject.name);
+                    OnOffCharacterMove(false);
+                    ItemBase _targetItem = hit.collider.gameObject.transform.GetComponent<ItemBase>();
+                    _targetItem.Interaction();
+                }
             }
+        }
+
+        public void OnOffCharacterMove(bool isOn)
+        {
+            _canMove = isOn;
+            _canRotate = isOn;
         }
         #endregion
 

@@ -7,11 +7,7 @@ namespace Assets.Scripts.Item
 {
     public class TestItem : ItemBase
     {
-        public override void Interaction()
-        {
-            base.Interaction();
-            Debug.Log("Interact ¼º°ø!!");
-        }
+        
     }
 }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Assets.Scripts.Common;
+using Assets.Scripts.Manager;
 
 namespace Assets.Scripts.Item.Base
 {
@@ -26,19 +27,23 @@ namespace Assets.Scripts.Item.Base
             _interactionScript = _data.InteractionScript;
         }
 
-        public virtual void InteractionStart()
-        {
-            if (_interactNum == 0) Interaction();    
-        }
-
         public virtual void Interaction() 
         {
+            if(_interactNum == 0) UIManager.Instance.OnOffDialog(true);
             _interactNum++;
-            if (_interactNum > _interactionScript.Length) InteractionFinish();
+            if (_interactNum > _interactionScript.Length)
+            {
+                InteractionFinish();
+                return;
+            }
+
+            UIManager.Instance.DialogSystem(_interactionScript[_interactNum - 1]);
         }
 
         public virtual void InteractionFinish()
         {
+            
+            UIManager.Instance.OnOffDialog(false);
             _interactNum = 0;
         }
 
