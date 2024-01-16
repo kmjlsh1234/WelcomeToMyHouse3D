@@ -8,7 +8,6 @@ namespace Assets.Scripts.Player
     public class PlayerController : MonoBehaviour
     {
         [Header("PlayerMove&Rotate")]
-        [SerializeField] float turnSpeed = 4.0f; // 마우스 회전 속도
         [SerializeField] float _speed;
         [SerializeField] float _normalSpeed = 5f;
         [SerializeField] float _runSpeed = 10f;
@@ -20,7 +19,6 @@ namespace Assets.Scripts.Player
 
         [Header("Interaction")]
         [SerializeField] private float _maxDistance;
-        private RaycastHit hit;
 
         [HideInInspector] public bool _canMove = true;
         [HideInInspector] public bool _canRotate = true;
@@ -28,7 +26,6 @@ namespace Assets.Scripts.Player
 
         [SerializeField] private Transform _camera;
 
-        private BoxCollider _interactBoxCollider;
         private void Awake()
         {
             body = GetComponent<Rigidbody>();           // Rigidbody를 가져온다.
@@ -103,8 +100,7 @@ namespace Assets.Scripts.Player
                     Debug.Log("Hit object: " + hit.collider.gameObject.name);
                     ItemBase item = hit.collider.gameObject.transform.GetComponent<ItemBase>();
                     item.InteractionStart();
-                }
-                
+                }                
             }
         }
         #endregion
