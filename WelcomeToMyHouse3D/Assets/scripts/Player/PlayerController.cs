@@ -37,9 +37,13 @@ namespace Assets.Scripts.Player
 
         void Update()
         {
-            if(_canMove) Move();
             if (_canRotate) Rotate();
             if (Input.GetKeyDown(KeyCode.Space)) Interaction();
+        }
+
+        private void FixedUpdate()
+        {
+            if (_canMove) Move();
         }
 
         #region :::: PlayerMove
@@ -98,7 +102,7 @@ namespace Assets.Scripts.Player
                 {
                     Debug.Log("Hit object: " + hit.collider.gameObject.name);
                     ItemBase item = hit.collider.gameObject.transform.GetComponent<ItemBase>();
-                    item.Interaction();
+                    item.InteractionStart();
                 }
                 
             }

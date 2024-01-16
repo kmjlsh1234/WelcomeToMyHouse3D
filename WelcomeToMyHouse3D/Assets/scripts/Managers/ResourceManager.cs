@@ -8,14 +8,22 @@ public class ResourceManager : SingletonBase<ResourceManager>
 {
     public List<ItemData> ItemDataList = new List<ItemData>();
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         LoadItemData();
     }
 
     public void LoadItemData()
     {
+        ItemDataList.Clear();
 
+        ItemData[] itemDatas = Resources.LoadAll<ItemData>("Data/ItemData");
+
+        foreach (ItemData itemData in itemDatas)
+        {
+            ItemDataList.Add(itemData);
+        }
     }
 
 
