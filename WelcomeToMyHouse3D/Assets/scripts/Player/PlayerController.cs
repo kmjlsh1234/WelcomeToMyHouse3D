@@ -102,7 +102,6 @@ namespace Assets.Scripts.Player
                 if (hit.collider.CompareTag("Item"))
                 {
                     Debug.Log("아이템 발견: " + hit.collider.gameObject.name);
-                    OnOffCharacterMove(false);
                     ItemBase _targetItem = hit.collider.gameObject.transform.GetComponent<ItemBase>();
                     _targetItem.Interaction();
                 }

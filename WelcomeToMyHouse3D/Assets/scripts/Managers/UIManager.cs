@@ -9,19 +9,12 @@ namespace Assets.Scripts.Manager
 {
     public class UIManager : SingletonBase<UIManager>
     {
+        [Header("DialogSystem")]
         [SerializeField] private GameObject _dialogUI;
         [SerializeField] private TMP_Text _dialogText;
-
-        protected override void Awake()
-        {
-            base.Awake();
-            AddEvent();
-        }
-
-        private void AddEvent()
-        {
-
-        }
+        [SerializeField] private GameObject _choiceSystem;
+        [SerializeField] private TMP_Text _choiceAText;
+        [SerializeField] private TMP_Text _choiceBText;
 
         public void OnOffDialog(bool isOn)
         {

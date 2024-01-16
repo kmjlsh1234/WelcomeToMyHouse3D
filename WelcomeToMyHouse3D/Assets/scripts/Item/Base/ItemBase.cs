@@ -20,7 +20,7 @@ namespace Assets.Scripts.Item.Base
             if (_data != null) InitSetting();
         }
 
-        private void InitSetting()
+        protected virtual void InitSetting()
         {
             _interactNum = 0;
             _itemType = _data.ItemType;
