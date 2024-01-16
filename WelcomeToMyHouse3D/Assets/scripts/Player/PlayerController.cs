@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Assets.Scripts.Item.Base;
 
 namespace Assets.Scripts.Player
 {
@@ -18,7 +19,7 @@ namespace Assets.Scripts.Player
         Rigidbody body; // Rigidbody를 가져올 변수
 
         [Header("Interaction")]
-        [SerializeField] private float MaxDistance;
+        [SerializeField] private float _maxDistance;
         private RaycastHit hit;
 
         [HideInInspector] public bool _canMove = true;
@@ -88,7 +89,19 @@ namespace Assets.Scripts.Player
         #region :::: Interaction
         private void Interaction()
         {
-            
+            Ray ray = new Ray(_camera.transform.position, _camera.transform.forward);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, _maxDistance))
+            {
+                if (hit.collider.tag == "Item")
+                {
+                    Debug.Log("Hit object: " + hit.collider.gameObject.name);
+                    ItemBase item = hit.collider.gameObject.transform.GetComponent<ItemBase>();
+                    item.Interaction();
+                }
+                
+            }
         }
         #endregion
 

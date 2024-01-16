@@ -10,6 +10,12 @@ namespace Assets.Scripts.Common
         MainScene
     }
 
+    public enum ItemType
+    {
+        UsableItem,
+        UnUsableItem,
+    }
+
     public enum PortalType
     {
         
@@ -23,6 +29,11 @@ namespace Assets.Scripts.Common
     {
         OutSide,
         InSide
+    }
+
+    public enum QuestType
+    {
+
     }
 
     public enum SFXName

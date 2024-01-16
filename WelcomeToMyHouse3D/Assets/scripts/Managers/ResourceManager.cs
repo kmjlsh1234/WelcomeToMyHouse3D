@@ -6,6 +6,19 @@ using UnityEngine.Video;
 using Assets.Scripts.Manager.Base;
 public class ResourceManager : SingletonBase<ResourceManager>
 {
+    public List<ItemData> ItemDataList = new List<ItemData>();
+
+    private void Awake()
+    {
+        LoadItemData();
+    }
+
+    public void LoadItemData()
+    {
+
+    }
+
+
     public Sprite LoadSprite(string fileName)
     {
         string dataPath = "Textures/Images/" + fileName;
