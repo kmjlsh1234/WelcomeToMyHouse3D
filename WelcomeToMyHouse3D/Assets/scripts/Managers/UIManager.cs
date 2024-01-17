@@ -16,16 +16,23 @@ namespace Assets.Scripts.Manager
         [SerializeField] private TMP_Text _choiceAText;
         [SerializeField] private TMP_Text _choiceBText;
 
-        public void OnOffDialog(bool isOn)
+        public void OnOffDialog(bool isOn, bool isChoiceSystemOn)
         {
             _dialogUI.SetActive(isOn);
+            _choiceSystem.SetActive(isChoiceSystemOn);
         }
+
+        
 
         public void DialogSystem(string narationScript)
         {
             _dialogText.text = string.Empty;
-            DOTween.To(() => _dialogText.text, x => _dialogText.text = x, narationScript, narationScript.Length * 0.05f).SetEase(Ease.Linear);
-            
+            DOTween.To(() => _dialogText.text, x => _dialogText.text = x, narationScript, narationScript.Length * 0.05f).SetEase(Ease.Linear).OnComplete(CheckNaractionFinish);
+        }
+
+        private void CheckNaractionFinish()
+        {
+
         }
     }
 }

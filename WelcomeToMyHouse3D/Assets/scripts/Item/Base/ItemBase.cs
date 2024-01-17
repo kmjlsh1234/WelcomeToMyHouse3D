@@ -29,7 +29,24 @@ namespace Assets.Scripts.Item.Base
 
         public virtual void Interaction() 
         {
-            if(_interactNum == 0) UIManager.Instance.OnOffDialog(true);
+            switch(_itemType)
+            {
+                case ItemType.ChoiceItem:
+                    ChoiceItemInteraction();
+                    break;
+                case ItemType.NotChoiceItem:
+                    NotChoiceItemInteraction();
+                    break;
+            }
+            ///<summary>첫 인터랙션 시작</summary>
+            if (_interactNum == 0)
+            {
+                PlayerViewModel.Instance.CurrentItem = _data;
+                var isChoiceSystemActive = (_itemType == ItemType.ChoiceItem) ? true : false;
+                UIManager.Instance.OnOffDialog(true, isChoiceSystemActive);
+                PlayerViewModel.Instance.Player.OnOffCharacterMove(false);
+            }
+            
             _interactNum++;
             if (_interactNum > _interactionScript.Length)
             {
@@ -40,11 +57,28 @@ namespace Assets.Scripts.Item.Base
             UIManager.Instance.DialogSystem(_interactionScript[_interactNum - 1]);
         }
 
+        private void NotChoiceItemInteraction()
+        {
+
+        }
+
+        private void ChoiceItemInteraction()
+        {
+
+        }
+
         public virtual void InteractionFinish()
         {
             
-            UIManager.Instance.OnOffDialog(false);
+            UIManager.Instance.OnOffDialog(false, false);
+            PlayerViewModel.Instance.CurrentItem = null;
+            PlayerViewModel.Instance.Player.OnOffCharacterMove(true);
             _interactNum = 0;
+        }
+
+        public void InteractFinishEvent()
+        {
+
         }
 
 

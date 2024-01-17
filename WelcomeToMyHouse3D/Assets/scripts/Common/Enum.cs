@@ -12,8 +12,8 @@ namespace Assets.Scripts.Common
 
     public enum ItemType
     {
-        UsableItem,
-        UnUsableItem,
+        ChoiceItem,
+        NotChoiceItem,
     }
 
     public enum PortalType

@@ -8,15 +8,16 @@ namespace Assets.Scripts.Player
     public class PlayerController : MonoBehaviour
     {
         [Header("PlayerMove&Rotate")]
-        [SerializeField] float turnSpeed = 4.0f; // 마우스 회전 속도
-        [SerializeField] float _speed;
-        [SerializeField] float _normalSpeed = 5f;
-        [SerializeField] float _runSpeed = 10f;
+        [SerializeField] private float turnSpeed = 4.0f; // 마우스 회전 속도
+        [SerializeField] private float _speed;
+        [SerializeField] private float _normalSpeed = 5f;
+        [SerializeField] private float _runSpeed = 10f;
+        [SerializeField] private float gravity = 10f;
         [SerializeField] private float lookSensitivity;
         [SerializeField] private float cameraRotationLimit;
         private float currentCameraRotationX;
 
-        Rigidbody body; // Rigidbody를 가져올 변수
+        Rigidbody rigid; // Rigidbody를 가져올 변수
 
         [Header("Interaction")]
         [SerializeField] private float MaxDistance;
@@ -24,13 +25,13 @@ namespace Assets.Scripts.Player
 
         [HideInInspector] public bool _canMove = true;
         [HideInInspector] public bool _canRotate = true;
-
+        private bool isGround = true;
 
         [SerializeField] private Transform _camera;
 
         private void Awake()
         {
-            body = GetComponent<Rigidbody>();           // Rigidbody를 가져온다.
+            rigid = GetComponent<Rigidbody>();           // Rigidbody를 가져온다.
             transform.rotation = Quaternion.identity;   // 회전 상태를 정면으로 초기화
         }
 
@@ -44,6 +45,16 @@ namespace Assets.Scripts.Player
         #region :::: PlayerMove
         void Move()
         {
+            float _moveDirX = Input.GetAxisRaw("Horizontal");
+            float _moveDirZ = Input.GetAxisRaw("Vertical");
+
+            Vector3 _moveHorizontal = transform.right * _moveDirX;
+            Vector3 _moveVertical = transform.forward * _moveDirZ;
+
+            Vector3 _velocity = (_moveHorizontal + _moveVertical).normalized * _speed;
+
+            rigid.MovePosition(transform.position + _velocity * Time.deltaTime);
+            /*
 #if UNITY_EDITOR
             //  키보드에 따른 이동량 측정
             float h = Input.GetAxis("Horizontal");
@@ -58,6 +69,7 @@ namespace Assets.Scripts.Player
 
             this.transform.Translate(mov * Time.deltaTime * _speed);           
 #endif
+            */
         }
 
         void Rotate()
@@ -81,24 +93,21 @@ namespace Assets.Scripts.Player
         {
             float _yRotation = Input.GetAxisRaw("Mouse X");
             Vector3 _characterRotationY = new Vector3(0f, _yRotation, 0f) * lookSensitivity;
-            body.MoveRotation(body.rotation * Quaternion.Euler(_characterRotationY)); // 쿼터니언 * 쿼터니언
+            rigid.MoveRotation(rigid.rotation * Quaternion.Euler(_characterRotationY)); // 쿼터니언 * 쿼터니언
         }
         #endregion
 
         #region :::: Interaction
         private void Interaction()
         {
-            Vector3 cameraPosition = _camera.position;
-            Vector3 cameraForward = _camera.forward;
+            Ray ray = new Ray(_camera.position, _camera.forward);
 
-            // 아이템을 찾을 위치 계산
-            Vector3 checkPosition = cameraPosition + cameraForward * MaxDistance;
-
-            // 레이캐스트를 이용하여 아이템 검사
+            // Ray에 맞은 정보를 저장할 변수
             RaycastHit hit;
-            if (Physics.Raycast(checkPosition, cameraForward, out hit, Mathf.Infinity))
+
+            // Ray를 발사하고 맞은 정보를 hit 변수에 저장
+            if (Physics.Raycast(ray, out hit, 2f))
             {
-                // 아이템을 찾았을 경우
                 if (hit.collider.CompareTag("Item"))
                 {
                     Debug.Log("아이템 발견: " + hit.collider.gameObject.name);
