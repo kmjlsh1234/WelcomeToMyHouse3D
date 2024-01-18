@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Assets.Scripts.Manager.Base;
+using Assets.Scripts.Player;
 
 namespace Assets.Scripts.Manager
 {
@@ -9,7 +10,12 @@ namespace Assets.Scripts.Manager
     {
         private const string USERDATA = "USERDATA";
         public PlayerData PlayerData = null;
-        
+
+        private void Start()
+        {
+            LoadData();
+        }
+
         public void LoadData()
         {
             PlayerData = ES3.Load<PlayerData>(USERDATA, defaultValue : null);
