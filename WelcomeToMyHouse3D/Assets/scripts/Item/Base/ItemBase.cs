@@ -9,12 +9,12 @@ namespace Assets.Scripts.Item.Base
 {
     public class ItemBase : MonoBehaviour
     {
-        private ItemData _data;
-        private int _interactNum = 0;
-        private ItemType _itemType;
-        private string[] _interactionScript;
+        protected ItemData _data;
+        protected int _interactNum = 0;
+        protected ItemType _itemType;
+        protected string[] _interactionScript;
 
-        private void Start()
+        protected void Start()
         {
             _data = ResourceManager.Instance.ItemDataList.FirstOrDefault(x => x.name == this.gameObject.name);
             if (_data != null) InitSetting();
@@ -40,11 +40,12 @@ namespace Assets.Scripts.Item.Base
             } 
         }
 
-        private void NotChoiceItemInteraction()
+        protected virtual void NotChoiceItemInteraction()
         {
             ///<summary>첫 인터랙션 시작</summary>
             if (_interactNum == 0)
             {
+                Debug.Log($"{this.gameObject.name}의 _interactionNum == 0");
                 PlayerViewModel.Instance.CurrentItemData = _data;
                 PlayerViewModel.Instance.CurrentItemBase = this;
                 UIManager.Instance.OnOffDialog(true);
@@ -61,7 +62,7 @@ namespace Assets.Scripts.Item.Base
             UIManager.Instance.DialogSystem(_interactionScript[_interactNum - 1]);
         }
 
-        private void ChoiceItemInteraction()
+        protected void ChoiceItemInteraction()
         {
             if(_interactNum == 0)
             {
@@ -94,6 +95,7 @@ namespace Assets.Scripts.Item.Base
             
             UIManager.Instance.OnOffDialog(false);
             PlayerViewModel.Instance.CurrentItemData = null;
+            PlayerViewModel.Instance.CurrentItemBase = null;
             PlayerViewModel.Instance.Player.OnOffCharacterMove(true);
             _interactNum = 0;
         }

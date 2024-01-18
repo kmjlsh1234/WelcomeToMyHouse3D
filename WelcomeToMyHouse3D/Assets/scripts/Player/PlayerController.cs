@@ -92,7 +92,7 @@ namespace Assets.Scripts.Player
             // Ray를 발사하고 맞은 정보를 hit 변수에 저장
             if (Physics.Raycast(ray, out hit, 2f))
             {
-                if (hit.collider.CompareTag("Item") && PlayerViewModel.Instance.CurrentItemData == null)
+                if (hit.collider.CompareTag("Item"))
                 {
                     Debug.Log("아이템 발견: " + hit.collider.gameObject.name);
                     ItemBase _targetItem = hit.collider.gameObject.transform.GetComponent<ItemBase>();
