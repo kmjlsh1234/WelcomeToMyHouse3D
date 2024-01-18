@@ -33,6 +33,7 @@ namespace Assets.Scripts.Manager
             _choiceBButton.OnClickAsObservable().Subscribe(_ => OnClickBButton());
         }
 
+        #region :::: DialogSystem
         public void OnOffDialog(bool isOn)
         {
             if (isOn) _currentItemData = PlayerViewModel.Instance.CurrentItemData;
@@ -78,6 +79,8 @@ namespace Assets.Scripts.Manager
             PlayerViewModel.Instance.CurrentItemBase.ChoiceBButtonClick();
             OnOffChoiceSystem(false);
         }
+        #endregion
+
     }
 }
 

@@ -54,22 +54,6 @@ namespace Assets.Scripts.Player
             Vector3 _velocity = (_moveHorizontal + _moveVertical).normalized * _speed;
 
             rigid.MovePosition(transform.position + _velocity * Time.deltaTime);
-            /*
-#if UNITY_EDITOR
-            //  키보드에 따른 이동량 측정
-            float h = Input.GetAxis("Horizontal");
-            float v = Input.GetAxis("Vertical");
-            Vector3 mov = new Vector3(h, 0, v);
-
-            // 이동량을 좌표에 반영
-            if (Input.GetKey(KeyCode.LeftShift))
-                _speed = _runSpeed;
-            else
-                _speed = _normalSpeed;
-
-            this.transform.Translate(mov * Time.deltaTime * _speed);           
-#endif
-            */
         }
 
         void Rotate()
@@ -108,7 +92,7 @@ namespace Assets.Scripts.Player
             // Ray를 발사하고 맞은 정보를 hit 변수에 저장
             if (Physics.Raycast(ray, out hit, 2f))
             {
-                if (hit.collider.CompareTag("Item"))
+                if (hit.collider.CompareTag("Item") && PlayerViewModel.Instance.CurrentItemData == null)
                 {
                     Debug.Log("아이템 발견: " + hit.collider.gameObject.name);
                     ItemBase _targetItem = hit.collider.gameObject.transform.GetComponent<ItemBase>();
