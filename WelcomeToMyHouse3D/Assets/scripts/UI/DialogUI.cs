@@ -40,7 +40,7 @@ namespace Assets.Scripts.UI
 
         private void SetData()
         {
-            itemData = PlayerViewModel.Instance.CurrentItem;
+            itemData = PlayerViewModel.Instance.CurrentItemData;
             if (itemData.ItemType == Common.ItemType.ChoiceItem)
             {
                 _choiceSystem.SetActive(true);

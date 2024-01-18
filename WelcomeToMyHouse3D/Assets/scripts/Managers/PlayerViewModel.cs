@@ -8,8 +8,8 @@ using Assets.Scripts.Player;
 public class PlayerViewModel : SingletonBase<PlayerViewModel>
 {
     public PlayerController Player;
-    public ItemData CurrentItem = null;
-
+    public ItemData CurrentItemData = null;
+    public ItemBase CurrentItemBase = null;
     protected override void Awake()
     {
         base.Awake();

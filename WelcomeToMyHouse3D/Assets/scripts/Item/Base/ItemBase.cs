@@ -37,16 +37,20 @@ namespace Assets.Scripts.Item.Base
                 case ItemType.NotChoiceItem:
                     NotChoiceItemInteraction();
                     break;
-            }
+            } 
+        }
+
+        private void NotChoiceItemInteraction()
+        {
             ///<summary>첫 인터랙션 시작</summary>
             if (_interactNum == 0)
             {
-                PlayerViewModel.Instance.CurrentItem = _data;
-                var isChoiceSystemActive = (_itemType == ItemType.ChoiceItem) ? true : false;
-                UIManager.Instance.OnOffDialog(true, isChoiceSystemActive);
+                PlayerViewModel.Instance.CurrentItemData = _data;
+                PlayerViewModel.Instance.CurrentItemBase = this;
+                UIManager.Instance.OnOffDialog(true);
                 PlayerViewModel.Instance.Player.OnOffCharacterMove(false);
             }
-            
+
             _interactNum++;
             if (_interactNum > _interactionScript.Length)
             {
@@ -57,27 +61,56 @@ namespace Assets.Scripts.Item.Base
             UIManager.Instance.DialogSystem(_interactionScript[_interactNum - 1]);
         }
 
-        private void NotChoiceItemInteraction()
-        {
-
-        }
-
         private void ChoiceItemInteraction()
         {
+            if(_interactNum == 0)
+            {
+                PlayerViewModel.Instance.CurrentItemData = _data;
+                PlayerViewModel.Instance.CurrentItemBase = this;
+                UIManager.Instance.OnOffDialog(true);
+                PlayerViewModel.Instance.Player.OnOffCharacterMove(false);
+            }
 
+            else if(_interactNum == _interactionScript.Length)
+            {
+                return;
+            }
+            else if(_interactNum > _interactionScript.Length)
+            {
+                PlayerViewModel.Instance.CurrentItemData = null;
+                PlayerViewModel.Instance.CurrentItemBase = null;
+                UIManager.Instance.OnOffDialog(false);
+                UIManager.Instance.OnOffChoiceSystem(false);
+                PlayerViewModel.Instance.Player.OnOffCharacterMove(true);
+                _interactNum = 0;
+                return;
+            }
+            _interactNum++;
+            UIManager.Instance.DialogSystem(_interactionScript[_interactNum - 1]);
         }
 
         public virtual void InteractionFinish()
         {
             
-            UIManager.Instance.OnOffDialog(false, false);
-            PlayerViewModel.Instance.CurrentItem = null;
+            UIManager.Instance.OnOffDialog(false);
+            PlayerViewModel.Instance.CurrentItemData = null;
             PlayerViewModel.Instance.Player.OnOffCharacterMove(true);
             _interactNum = 0;
         }
 
-        public void InteractFinishEvent()
+        public virtual void ChoiceAButtonClick()
         {
+            if(_data.ChoiceFinishScript != string.Empty)
+            {
+                UIManager.Instance.DialogSystem(_data.ChoiceFinishScript);
+                _interactNum++;
+            }
+        }
+
+        public virtual void ChoiceBButtonClick()
+        {
+            _interactNum++;
+            Interaction();
 
         }
 
