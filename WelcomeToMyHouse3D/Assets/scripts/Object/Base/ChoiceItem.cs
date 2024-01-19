@@ -1,11 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Assets.Scripts.Item.Base;
 
-namespace Assets.Scripts.Item
+namespace Assets.Scripts.Object.Base
 {
-    public class TestItem : ItemBase
+    public class ChoiceItem : ObjectBase
     {
         
     }

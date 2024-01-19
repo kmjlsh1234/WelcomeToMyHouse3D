@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Assets.Scripts.Manager.Base;
+using Assets.Scripts.Common;
 using DG.Tweening;
 using UniRx;
 
@@ -19,7 +20,7 @@ namespace Assets.Scripts.Manager
         [SerializeField] private Button _choiceBButton;
         [SerializeField] private TMP_Text _choiceAText;
         [SerializeField] private TMP_Text _choiceBText;
-        private ItemData _currentItemData = null;
+        private ObjectData _currentObjectData = null;
 
         protected override void Awake()
         {
@@ -36,7 +37,7 @@ namespace Assets.Scripts.Manager
         #region :::: DialogSystem
         public void OnOffDialog(bool isOn)
         {
-            if (isOn) _currentItemData = PlayerViewModel.Instance.CurrentItemData;
+            if (isOn) _currentObjectData = PlayerViewModel.Instance.CurrentObjectData;
             _dialogUI.SetActive(isOn);
             
         }
@@ -56,27 +57,27 @@ namespace Assets.Scripts.Manager
 
         private void CheckFinishScript(string narationScript)
         {
-            if (_currentItemData.ItemType == Common.ItemType.NotChoiceItem) return;
+            if (_currentObjectData.ObjectType == ObjectType.NotChoiceObject) return;
 
-            string A = _currentItemData.InteractionScript[_currentItemData.InteractionScript.Length - 1];
+            string A = _currentObjectData.InteractionScript[_currentObjectData.InteractionScript.Length - 1];
             string B = narationScript;
             if (string.Equals(A,B))
             {
-                _choiceAText.text = _currentItemData.ChoiceA;
-                _choiceBText.text = _currentItemData.ChoiceB;
+                _choiceAText.text = _currentObjectData.ChoiceA;
+                _choiceBText.text = _currentObjectData.ChoiceB;
                 OnOffChoiceSystem(true);
             }
         }
 
         private void OnClickAButton()
         {
-            PlayerViewModel.Instance.CurrentItemBase.ChoiceAButtonClick();
+            PlayerViewModel.Instance.CurrentObjectBase.ChoiceAButtonClick();
             OnOffChoiceSystem(false);
         }
 
         private void OnClickBButton()
         {
-            PlayerViewModel.Instance.CurrentItemBase.ChoiceBButtonClick();
+            PlayerViewModel.Instance.CurrentObjectBase.ChoiceBButtonClick();
             OnOffChoiceSystem(false);
         }
         #endregion

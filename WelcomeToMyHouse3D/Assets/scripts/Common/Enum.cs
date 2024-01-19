@@ -10,10 +10,11 @@ namespace Assets.Scripts.Common
         MainScene
     }
 
-    public enum ItemType
+    public enum ObjectType
     {
-        ChoiceItem,
-        NotChoiceItem,
+        ChoiceObject,
+        NotChoiceObject,
+        ItemDropObject,
     }
 
     public enum PortalType

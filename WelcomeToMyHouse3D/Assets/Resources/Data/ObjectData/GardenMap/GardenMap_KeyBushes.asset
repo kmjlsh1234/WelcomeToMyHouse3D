@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f8aac7b85edc5d458f1fd9af617a93d, type: 3}
+  m_Name: GardenMap_KeyBushes
+  m_EditorClassIdentifier: 
+  ObjectName: GardenMap_KeyBushes
+  ObjectType: 2
+  InteractionScript:
+  - "\uBB34\uC131\uD55C \uB364\uBD88\uC774 \uC788\uB2E4."
+  ChoiceA: "\uB364\uBD88\uC744 \uB4A4\uC801\uC778\uB2E4."
+  ChoiceB: "\uC544\uBB34 \uAC83\uB3C4 \uD558\uC9C0 \uC54A\uB294\uB2E4."
+  ChoiceFinishScript: "\uC218\uD480\uC744 \uB4A4\uC9C0\uC790 \uB179\uC2A8 \uC5F4\uC1E0\uAC00
+    \uB5A8\uC5B4\uC84C\uB2E4."
+  ItemDropObjectData:
+    IsTrigger: 0
+    AfterItemDropScript: "\uB364\uBD88\uC744 \uB354 \uB4A4\uC838\uB3C4 \uC544\uBB34
+      \uAC83\uB3C4 \uBCF4\uC774\uC9C0 \uC54A\uB294\uB2E4."

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Assets.Scripts.Item.Base;
+using Assets.Scripts.Object.Base;
 
 namespace Assets.Scripts.Player
 {
@@ -16,16 +16,15 @@ namespace Assets.Scripts.Player
         [SerializeField] private float lookSensitivity;
         [SerializeField] private float cameraRotationLimit;
         private float currentCameraRotationX;
-
         Rigidbody rigid; // Rigidbody를 가져올 변수
-
+        [SerializeField] private CapsuleCollider capsuleCollider;
+        [SerializeField] private bool isGround;
         [Header("Interaction")]
         [SerializeField] private float MaxDistance;
         private RaycastHit hit;
 
         [HideInInspector] public bool _canMove = true;
         [HideInInspector] public bool _canRotate = true;
-        private bool isGround = true;
 
         [SerializeField] private Transform _camera;
 
@@ -37,12 +36,21 @@ namespace Assets.Scripts.Player
 
         void Update()
         {
-            if(_canMove) Move();
+            IsGround();
+            if (_canMove) Move();
             if (_canRotate) Rotate();
             if (Input.GetKeyDown(KeyCode.Space)) Interaction();
         }
 
         #region :::: PlayerMove
+
+        private void IsGround()
+        {
+            isGround = Physics.Raycast(capsuleCollider.center, Vector3.down, (capsuleCollider.height / 2 + 0.1f));
+            Debug.DrawRay(capsuleCollider.center, Vector3.down * (capsuleCollider.height/2 + 0.1f), isGround ? Color.green : Color.red);
+            if (!isGround) rigid.MovePosition(transform.position + Vector3.down * 10f * Time.deltaTime);
+        }
+
         void Move()
         {
             float _moveDirX = Input.GetAxisRaw("Horizontal");
@@ -75,6 +83,7 @@ namespace Assets.Scripts.Player
 
         private void CharacterRotation()  // 좌우 캐릭터 회전
         {
+
             float _yRotation = Input.GetAxisRaw("Mouse X");
             Vector3 _characterRotationY = new Vector3(0f, _yRotation, 0f) * lookSensitivity;
             rigid.MoveRotation(rigid.rotation * Quaternion.Euler(_characterRotationY)); // 쿼터니언 * 쿼터니언
@@ -95,8 +104,8 @@ namespace Assets.Scripts.Player
                 if (hit.collider.CompareTag("Item"))
                 {
                     Debug.Log("아이템 발견: " + hit.collider.gameObject.name);
-                    ItemBase _targetItem = hit.collider.gameObject.transform.GetComponent<ItemBase>();
-                    _targetItem.Interaction();
+                    ObjectBase _targetObject = hit.collider.gameObject.transform.GetComponent<ObjectBase>();
+                    _targetObject.Interaction();
                 }
             }
         }

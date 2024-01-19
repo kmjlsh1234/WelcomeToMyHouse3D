@@ -1,20 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Assets.Scripts.Item.Base;
+using Assets.Scripts.Object.Base;
 using Assets.Scripts.Manager;
 
-namespace Assets.Scripts.Item
+namespace Assets.Scripts.Object
 {
-    public class Cat : ItemBase
+    public class Cat : ObjectBase
     {
-        protected override void NotChoiceItemInteraction()
+        Animator _anim;
+        private void Awake()
+        {
+            _anim = GetComponent<Animator>();
+            _anim.SetTrigger("Sitting");
+        }
+        protected override void NotChoiceObjectInteraction()
         {
             ///<summary>첫 인터랙션 시작</summary>
             if (_interactNum == 0)
             {
-                PlayerViewModel.Instance.CurrentItemData = _data;
-                PlayerViewModel.Instance.CurrentItemBase = this;
+                PlayerViewModel.Instance.CurrentObjectData = _data;
+                PlayerViewModel.Instance.CurrentObjectBase = this;
                 UIManager.Instance.OnOffDialog(true);
                 PlayerViewModel.Instance.Player.OnOffCharacterMove(false);
                 DataManager.Instance.SaveData();

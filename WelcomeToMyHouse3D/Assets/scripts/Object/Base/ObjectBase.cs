@@ -5,49 +5,52 @@ using System.Linq;
 using Assets.Scripts.Common;
 using Assets.Scripts.Manager;
 
-namespace Assets.Scripts.Item.Base
+namespace Assets.Scripts.Object.Base
 {
-    public class ItemBase : MonoBehaviour
+    public class ObjectBase : MonoBehaviour
     {
-        protected ItemData _data;
+        protected ObjectData _data;
         protected int _interactNum = 0;
-        protected ItemType _itemType;
+        protected ObjectType _objectType;
         protected string[] _interactionScript;
 
         protected void Start()
         {
-            _data = ResourceManager.Instance.ItemDataList.FirstOrDefault(x => x.name == this.gameObject.name);
+            _data = ResourceManager.Instance.ObjectDataList.FirstOrDefault(x => x.name == this.gameObject.name);
             if (_data != null) InitSetting();
         }
 
         protected virtual void InitSetting()
         {
             _interactNum = 0;
-            _itemType = _data.ItemType;
+            _objectType = _data.ObjectType;
             _interactionScript = _data.InteractionScript;
         }
 
         public virtual void Interaction() 
         {
-            switch(_itemType)
+            switch(_objectType)
             {
-                case ItemType.ChoiceItem:
-                    ChoiceItemInteraction();
+                case ObjectType.ChoiceObject:
+                    ChoiceObjectInteraction();
                     break;
-                case ItemType.NotChoiceItem:
-                    NotChoiceItemInteraction();
+                case ObjectType.NotChoiceObject:
+                    NotChoiceObjectInteraction();
+                    break;
+                case ObjectType.ItemDropObject:
+                    ItemDropObjectInteraction();
                     break;
             } 
         }
 
-        protected virtual void NotChoiceItemInteraction()
+        protected virtual void NotChoiceObjectInteraction()
         {
             ///<summary>첫 인터랙션 시작</summary>
             if (_interactNum == 0)
             {
                 Debug.Log($"{this.gameObject.name}의 _interactionNum == 0");
-                PlayerViewModel.Instance.CurrentItemData = _data;
-                PlayerViewModel.Instance.CurrentItemBase = this;
+                PlayerViewModel.Instance.CurrentObjectData = _data;
+                PlayerViewModel.Instance.CurrentObjectBase = this;
                 UIManager.Instance.OnOffDialog(true);
                 PlayerViewModel.Instance.Player.OnOffCharacterMove(false);
             }
@@ -62,12 +65,12 @@ namespace Assets.Scripts.Item.Base
             UIManager.Instance.DialogSystem(_interactionScript[_interactNum - 1]);
         }
 
-        protected void ChoiceItemInteraction()
+        protected void ChoiceObjectInteraction()
         {
             if(_interactNum == 0)
             {
-                PlayerViewModel.Instance.CurrentItemData = _data;
-                PlayerViewModel.Instance.CurrentItemBase = this;
+                PlayerViewModel.Instance.CurrentObjectData = _data;
+                PlayerViewModel.Instance.CurrentObjectBase = this;
                 UIManager.Instance.OnOffDialog(true);
                 PlayerViewModel.Instance.Player.OnOffCharacterMove(false);
             }
@@ -78,8 +81,8 @@ namespace Assets.Scripts.Item.Base
             }
             else if(_interactNum > _interactionScript.Length)
             {
-                PlayerViewModel.Instance.CurrentItemData = null;
-                PlayerViewModel.Instance.CurrentItemBase = null;
+                PlayerViewModel.Instance.CurrentObjectData = null;
+                PlayerViewModel.Instance.CurrentObjectBase = null;
                 UIManager.Instance.OnOffDialog(false);
                 UIManager.Instance.OnOffChoiceSystem(false);
                 PlayerViewModel.Instance.Player.OnOffCharacterMove(true);
@@ -90,12 +93,20 @@ namespace Assets.Scripts.Item.Base
             UIManager.Instance.DialogSystem(_interactionScript[_interactNum - 1]);
         }
 
+        public virtual void ItemDropObjectInteraction()
+        {
+            if(!_data.ItemDropObjectData.IsTrigger)
+            {
+
+            }
+        }
+
         public virtual void InteractionFinish()
         {
             
             UIManager.Instance.OnOffDialog(false);
-            PlayerViewModel.Instance.CurrentItemData = null;
-            PlayerViewModel.Instance.CurrentItemBase = null;
+            PlayerViewModel.Instance.CurrentObjectData = null;
+            PlayerViewModel.Instance.CurrentObjectBase = null;
             PlayerViewModel.Instance.Player.OnOffCharacterMove(true);
             _interactNum = 0;
         }
@@ -113,7 +124,6 @@ namespace Assets.Scripts.Item.Base
         {
             _interactNum++;
             Interaction();
-
         }
 
 

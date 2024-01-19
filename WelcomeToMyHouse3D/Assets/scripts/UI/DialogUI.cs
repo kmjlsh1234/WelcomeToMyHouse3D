@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Assets.Scripts.Item.Base;
+using Assets.Scripts.Object.Base;
 using Assets.Scripts.Manager;
+using Assets.Scripts.Common;
 using DG.Tweening;
 using UniRx;
 
@@ -20,7 +21,7 @@ namespace Assets.Scripts.UI
         [SerializeField] private TMP_Text _choiceAText;
         [SerializeField] private TMP_Text _choiceBText;
 
-        private ItemData itemData = null;
+        private ObjectData objectData = null;
 
         private void Awake()
         {
@@ -40,12 +41,12 @@ namespace Assets.Scripts.UI
 
         private void SetData()
         {
-            itemData = PlayerViewModel.Instance.CurrentItemData;
-            if (itemData.ItemType == Common.ItemType.ChoiceItem)
+            objectData = PlayerViewModel.Instance.CurrentObjectData;
+            if (objectData.ObjectType == ObjectType.ChoiceObject)
             {
                 _choiceSystem.SetActive(true);
-                _choiceAText.text = itemData.ChoiceA;
-                _choiceBText.text = itemData.ChoiceB;
+                _choiceAText.text = objectData.ChoiceA;
+                _choiceBText.text = objectData.ChoiceB;
             }
         }
 

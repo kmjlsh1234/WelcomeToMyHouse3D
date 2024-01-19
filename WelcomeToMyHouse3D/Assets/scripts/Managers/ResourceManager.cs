@@ -6,7 +6,7 @@ using UnityEngine.Video;
 using Assets.Scripts.Manager.Base;
 public class ResourceManager : SingletonBase<ResourceManager>
 {
-    public List<ItemData> ItemDataList = new List<ItemData>();
+    public List<ObjectData> ObjectDataList = new List<ObjectData>();
 
     protected override void Awake()
     {
@@ -16,13 +16,13 @@ public class ResourceManager : SingletonBase<ResourceManager>
 
     public void LoadItemData()
     {
-        ItemDataList.Clear();
+        ObjectDataList.Clear();
 
-        ItemData[] itemDatas = Resources.LoadAll<ItemData>("Data/ItemData");
+        ObjectData[] ObjectDatas = Resources.LoadAll<ObjectData>("Data/ObjectData");
 
-        foreach (ItemData itemData in itemDatas)
+        foreach (ObjectData objectData in ObjectDatas)
         {
-            ItemDataList.Add(itemData);
+            ObjectDataList.Add(objectData);
         }
     }
 

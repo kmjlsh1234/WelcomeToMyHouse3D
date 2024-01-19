@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f8aac7b85edc5d458f1fd9af617a93d, type: 3}
   m_Name: GardenMap_Door
   m_EditorClassIdentifier: 
-  ItemName: GardenMap_Door
-  ItemType: 1
-  IsTrigger: 0
+  ObjectName: GardenMap_Door
+  ObjectType: 0
   InteractionScript:
   - "\uBB38\uC774 \uAD73\uAC8C \uB2EB\uD600 \uC788\uB2E4."
   ChoiceA: 

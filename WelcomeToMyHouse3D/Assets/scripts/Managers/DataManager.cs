@@ -24,7 +24,6 @@ namespace Assets.Scripts.Manager
                 PlayerData = new PlayerData();
                 SaveData();
             }
-
         }
 
         public void SaveData()
@@ -32,6 +31,7 @@ namespace Assets.Scripts.Manager
             Transform playerTrans = PlayerViewModel.Instance.Player.gameObject.transform;
             PlayerData.Position = playerTrans.position;
             PlayerData.Rotation = playerTrans.rotation.eulerAngles;
+            ES3.Save<PlayerData>(USERDATA, PlayerData);
             Debug.Log("데이터 저장 완료!");
 
         }
