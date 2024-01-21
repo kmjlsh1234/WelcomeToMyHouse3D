@@ -36,7 +36,6 @@ namespace Assets.Scripts.Player
 
         void Update()
         {
-            IsGround();
             if (_canMove) Move();
             if (_canRotate) Rotate();
             if (Input.GetKeyDown(KeyCode.Space)) Interaction();
@@ -44,12 +43,7 @@ namespace Assets.Scripts.Player
 
         #region :::: PlayerMove
 
-        private void IsGround()
-        {
-            isGround = Physics.Raycast(capsuleCollider.center, Vector3.down, (capsuleCollider.height / 2 + 0.1f));
-            Debug.DrawRay(capsuleCollider.center, Vector3.down * (capsuleCollider.height/2 + 0.1f), isGround ? Color.green : Color.red);
-            if (!isGround) rigid.MovePosition(transform.position + Vector3.down * 10f * Time.deltaTime);
-        }
+        
 
         void Move()
         {

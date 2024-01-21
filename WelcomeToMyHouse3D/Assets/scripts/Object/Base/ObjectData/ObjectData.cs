@@ -47,5 +47,5 @@ public class ItemDropObjectData
     [Space(20f)]
 
     [Header("아이템 드롭 후 문구")]
-    public string AfterItemDropScript;
+    public string[] AfterItemDropScript;
 }

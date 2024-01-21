@@ -97,7 +97,45 @@ namespace Assets.Scripts.Object.Base
         {
             if(!_data.ItemDropObjectData.IsTrigger)
             {
+                ///<summary>첫 인터랙션 시작</summary>
+                if (_interactNum == 0)
+                {
+                    Debug.Log($"{this.gameObject.name}의 _interactionNum == 0");
+                    PlayerViewModel.Instance.CurrentObjectData = _data;
+                    PlayerViewModel.Instance.CurrentObjectBase = this;
+                    UIManager.Instance.OnOffDialog(true);
+                    PlayerViewModel.Instance.Player.OnOffCharacterMove(false);
+                }
 
+                _interactNum++;
+                if (_interactNum > _interactionScript.Length)
+                {
+                    InteractionFinish();
+                    return;
+                }
+
+                UIManager.Instance.DialogSystem(_interactionScript[_interactNum - 1]);
+            }
+            else
+            {
+                ///<summary>첫 인터랙션 시작</summary>
+                if (_interactNum == 0)
+                {
+                    Debug.Log($"{this.gameObject.name}의 _interactionNum == 0");
+                    PlayerViewModel.Instance.CurrentObjectData = _data;
+                    PlayerViewModel.Instance.CurrentObjectBase = this;
+                    UIManager.Instance.OnOffDialog(true);
+                    PlayerViewModel.Instance.Player.OnOffCharacterMove(false);
+                }
+
+                _interactNum++;
+                if (_interactNum > _data.ItemDropObjectData.AfterItemDropScript.Length)
+                {
+                    InteractionFinish();
+                    return;
+                }
+
+                UIManager.Instance.DialogSystem(_data.ItemDropObjectData.AfterItemDropScript[_interactNum - 1]);
             }
         }
 
