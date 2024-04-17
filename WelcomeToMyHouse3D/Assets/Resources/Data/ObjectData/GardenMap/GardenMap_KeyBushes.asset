@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GardenMap_KeyBushes
   m_EditorClassIdentifier: 
   ObjectName: GardenMap_KeyBushes
-  ObjectType: 2
+  ObjectType: 0
   InteractionScript:
   - "\uBB34\uC131\uD55C \uB364\uBD88\uC774 \uC788\uB2E4."
   ChoiceA: "\uB364\uBD88\uC744 \uB4A4\uC801\uC778\uB2E4."

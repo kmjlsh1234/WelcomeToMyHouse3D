@@ -33,7 +33,9 @@ MonoBehaviour:
     - Assembly-CSharp
     - Assembly-CSharp-firstpass
     - Autodesk.Fbx
+    - Cinemachine
     - FbxBuildTestAssets
+    - MeshBakerCore
     - UniRx
     - UniRx.Examples
     showAdvancedSettings: 0
