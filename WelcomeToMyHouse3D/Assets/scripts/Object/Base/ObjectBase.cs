@@ -18,6 +18,12 @@ namespace Assets.Scripts.Object.Base
 
         public virtual void ChoiceAEvent() { }
         public virtual void ChoiceBEvent() { }
+
+        public bool CheckItem(ItemName itemName)
+        {
+            var isRegist = PlayerViewModel.Instance.Inventory.Any(item => item == itemName);
+            return isRegist;
+        }
     }
 }
 
