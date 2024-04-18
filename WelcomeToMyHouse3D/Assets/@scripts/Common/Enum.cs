@@ -8,6 +8,7 @@ namespace Assets.Scripts.Common
     {
         Dialog,
         Setting,
+        ItemShow,
         Inventory,
         Joystick,
     }

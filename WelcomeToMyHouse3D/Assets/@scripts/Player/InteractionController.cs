@@ -27,7 +27,6 @@ namespace Assets.Scripts.Player
                 if (!EventSystem.current.IsPointerOverGameObject())
                     CastRay();
             }
-                
         }
 
         private void CastRay()
@@ -45,7 +44,12 @@ namespace Assets.Scripts.Player
                     var objectBase = hitObj.GetComponent<ObjectBase>();
                     var objectData = ResourceManager.Instance.ObjectDataList.FirstOrDefault(x => x.name == hitObj.name);
 
-                    if (objectData != null) PlayerViewModel.Instance.CurrentObjectData = objectData;
+                    if (objectData != null)
+                    {
+                        objectBase.TouchEvent();
+                        PlayerViewModel.Instance.CurrentObjectData = objectData;
+                    }
+
                     if(objectBase != null) PlayerViewModel.Instance.CurrentObjectBase = objectBase;
                     UIManager.Instance.Show(PopupStyle.Dialog);
                 }

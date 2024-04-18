@@ -15,6 +15,8 @@ namespace Assets.Scripts.Manager
     {
         public GameObject[] PopupList;
         private const string UIPATH = "UI";
+        protected CompositeDisposable CancelerObject;
+
         protected override void Awake()
         {
             base.Awake();
@@ -44,10 +46,6 @@ namespace Assets.Scripts.Manager
             }
         }
 
-        internal void Hide(object popupstyle)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }
 

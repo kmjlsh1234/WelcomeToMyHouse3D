@@ -16,6 +16,7 @@ namespace Assets.Scripts.Object.Base
             
         }
 
+        public virtual void TouchEvent() { }
         public virtual void ChoiceAEvent() { }
         public virtual void ChoiceBEvent() { }
 

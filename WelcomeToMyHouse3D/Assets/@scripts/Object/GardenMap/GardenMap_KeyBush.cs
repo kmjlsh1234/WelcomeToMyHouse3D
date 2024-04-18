@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Assets.Scripts.Object.Base;
+using DG.Tweening;
+using Assets.Scripts.Manager;
+using Assets.Scripts.Common;
+
 namespace Assets.Scripts.Object
 {
     public class GardenMap_KeyBush : ObjectBase
@@ -12,14 +16,22 @@ namespace Assets.Scripts.Object
         protected override void Start()
         {
             base.Start();
-            _keyPrefab = Resources.Load<GameObject>("Pref/GardenMap_Key");
+            _keyPrefab = Resources.Load<GameObject>("Pref/GardenMap_BushKey");
             InstantiateKey();
+        }
+
+        public override void TouchEvent()
+        {
+
         }
 
         public override void ChoiceAEvent()
         {
             base.ChoiceAEvent();
+            
             _key.SetActive(true);
+            var targetPos = new Vector3(-0.6f, 0.15f, 0f);
+            _key.transform.DOLocalJump(targetPos, 1f, 1, 1f);
         }
 
         public override void ChoiceBEvent()
