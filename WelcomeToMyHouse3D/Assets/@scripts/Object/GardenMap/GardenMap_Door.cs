@@ -20,6 +20,8 @@ namespace Assets.Scripts.Object
                 //fadeÀç»ý
                 MapManager.Instance.GenerateMap(MapType.FirstFloor);
                 PlayerViewModel.Instance.MovePlayerPos(MapType.FirstFloor, DoorCount.FirstDoor);
+                if (PlayerViewModel.Instance.PlayerData.QuestName == 0)
+                    PlayerViewModel.Instance.PlayerData.QuestName = QuestName.GardenMap_OpenDoor;
             }
                 
 

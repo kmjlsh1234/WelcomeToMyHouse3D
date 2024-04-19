@@ -44,11 +44,14 @@ namespace Assets.Scripts.Common
 
     public enum ItemName
     {
-        GardenMap_BushKey,
+        GardenMap_BushKey, //별장 출입 열쇠
+        FirstFloor_Key, //2층 출입 열쇠
+        FirstFloor_Injector, //1층 주사기
     }
 
     public enum SFXName
     {
+        None,
         SFX_Click,
         SFX_ItemDrop,
         SFX_CatSound,
@@ -65,7 +68,9 @@ namespace Assets.Scripts.Common
 
     public enum QuestName
     {
-        GardenMap_OpenDoor = 0,
+        GardenMap_OpenDoor = 0, //정원 문 열기
+        FirstFloor_GetInjector = 1,
+        FirstFloor_OpenDoor = 2,
     }
 
     public enum DoorCount

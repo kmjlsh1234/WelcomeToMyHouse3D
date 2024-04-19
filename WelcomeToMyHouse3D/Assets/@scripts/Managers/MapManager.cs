@@ -5,40 +5,44 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class MapManager : SingletonBase<MapManager>
+namespace Assets.Scripts.Manager
 {
-    private const string MAPPATH = "Map";
-    public GameObject[] MapList;
-    protected override void Awake()
+    public class MapManager : SingletonBase<MapManager>
     {
-        base.Awake();
-        MapList = Resources.LoadAll<GameObject>(MAPPATH);
-    }
-
-    private void Start()
-    {
-        //GenerateMap(PlayerViewModel.Instance.PlayerData.CurMapType);
-    }
-
-    public void GenerateMap(MapType type)
-    {
-        if(PlayerViewModel.Instance.CurrentMap != null)
+        private const string MAPPATH = "Map";
+        public GameObject[] MapList;
+        protected override void Awake()
         {
-            Destroy(PlayerViewModel.Instance.CurrentMap);
+            base.Awake();
+            MapList = Resources.LoadAll<GameObject>(MAPPATH);
         }
 
-        GameObject target = MapList.FirstOrDefault(x => x.name.Contains(type.ToString()));
-        if(target != null)
+        private void Start()
         {
-            var map = Instantiate(target);
-            map.name = target.name;
-            map.transform.position = Vector3.zero;
-            map.transform.rotation = Quaternion.identity;
-            map.transform.localScale = Vector3.one;
-            PlayerViewModel.Instance.CurrentMap = map;
+            //GenerateMap(PlayerViewModel.Instance.PlayerData.CurMapType);
         }
-        PlayerViewModel.Instance.PlayerData.CurMapType = type;
-    }
 
-    
+        public void GenerateMap(MapType type)
+        {
+            if (PlayerViewModel.Instance.CurrentMap != null)
+            {
+                Destroy(PlayerViewModel.Instance.CurrentMap);
+            }
+
+            GameObject target = MapList.FirstOrDefault(x => x.name.Contains(type.ToString()));
+            if (target != null)
+            {
+                var map = Instantiate(target);
+                map.name = target.name;
+                map.transform.position = Vector3.zero;
+                map.transform.rotation = Quaternion.identity;
+                map.transform.localScale = Vector3.one;
+                PlayerViewModel.Instance.CurrentMap = map;
+            }
+            PlayerViewModel.Instance.PlayerData.CurMapType = type;
+        }
+
+
+    }
 }
+

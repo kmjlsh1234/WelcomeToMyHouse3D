@@ -11,11 +11,12 @@ namespace Assets.Scripts.Object.Base
     {
         [SerializeField] protected ObjectType _objectType;
         [SerializeField] protected ItemName _needItemName;
-        [SerializeField] private SFXName _sfxName;
+        [SerializeField] private SFXName _sfxName = SFXName.None;
 
         public virtual void TouchEvent()
         {
-            SoundManager.Instance.PlaySound(_sfxName);
+            if (_sfxName != SFXName.None)
+                SoundManager.Instance.PlaySound(_sfxName);
         }
         public virtual void ChoiceAEvent() { }
         public virtual void ChoiceBEvent() { }
