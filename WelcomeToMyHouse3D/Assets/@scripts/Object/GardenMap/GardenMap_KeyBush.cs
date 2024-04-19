@@ -13,20 +13,17 @@ namespace Assets.Scripts.Object
         private GameObject _keyPrefab;
         private GameObject _key;
 
-        protected override void Start()
+        private void Start()
         {
-            base.Start();
-            if (!CheckItem())
-            {
-                _keyPrefab = Resources.Load<GameObject>("Pref/GardenMap_BushKey");
-                InstantiateKey();
-            }
-                
+            if (CheckItem()) return;
+
+            _keyPrefab = Resources.Load<GameObject>("Pref/GardenMap_BushKey");
+            InstantiateKey();
         }
 
         public override void TouchEvent()
         {
-
+            base.TouchEvent();
         }
 
         public override void ChoiceAEvent()

@@ -37,6 +37,7 @@ public class MapManager : SingletonBase<MapManager>
             map.transform.localScale = Vector3.one;
             PlayerViewModel.Instance.CurrentMap = map;
         }
+        PlayerViewModel.Instance.PlayerData.CurMapType = type;
     }
 
     

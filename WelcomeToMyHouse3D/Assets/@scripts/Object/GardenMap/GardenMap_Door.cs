@@ -15,8 +15,8 @@ namespace Assets.Scripts.Object
             base.ChoiceAEvent();
             if (CheckItem())
             {
-                //사운드 넣기
-                PlayerViewModel.Instance.PlayerData.CurMapType = MapType.FirstFloor;
+                SoundManager.Instance.PlaySound(SFXName.SFX_DoorOpen);
+                
                 //fade재생
                 MapManager.Instance.GenerateMap(MapType.FirstFloor);
                 PlayerViewModel.Instance.MovePlayerPos(MapType.FirstFloor, DoorCount.FirstDoor);
@@ -25,6 +25,7 @@ namespace Assets.Scripts.Object
 
             else
             {
+                SoundManager.Instance.PlaySound(SFXName.SFX_DoorClose);
                 //문을 열어야 해 나레이션 재생
                 Debug.LogError("");
             }

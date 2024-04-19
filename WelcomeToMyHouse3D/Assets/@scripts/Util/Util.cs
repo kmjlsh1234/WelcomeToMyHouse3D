@@ -11,7 +11,7 @@ namespace Assets.Scripts.Util
 {
     public static class Util
     {
-        public static IObservable<Unit> OnSoundClickAsObservable(this Button button, SFXName sfx = SFXName.SFX_Crush)
+        public static IObservable<Unit> OnSoundClickAsObservable(this Button button, SFXName sfx = SFXName.SFX_Click)
         {
             SoundManager.Instance.PlaySound(sfx);
             return button.OnClickAsObservable();

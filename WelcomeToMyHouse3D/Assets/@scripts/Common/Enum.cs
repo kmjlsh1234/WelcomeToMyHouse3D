@@ -49,9 +49,12 @@ namespace Assets.Scripts.Common
 
     public enum SFXName
     {
-        SFX_Door,
-        SFX_WallClose,
-        SFX_Crush
+        SFX_Click,
+        SFX_ItemDrop,
+        SFX_CatSound,
+        SFX_DoorOpen,
+        SFX_DoorClose,
+        SFX_BushSound,
     }
 
     public enum BGMName

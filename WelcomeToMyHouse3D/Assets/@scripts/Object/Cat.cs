@@ -12,7 +12,6 @@ namespace Assets.Scripts.Object
     public class Cat : MonoBehaviour
     {
         private CapsuleCollider _collider;
-        private AudioSource _audioSource;
         private Animator _anim;
         private Vector3 _originRotate;
         private Coroutine _coroutine;
@@ -21,14 +20,12 @@ namespace Assets.Scripts.Object
         {
             _anim = GetComponent<Animator>();
             _collider = GetComponent<CapsuleCollider>();
-            _audioSource = GetComponent<AudioSource>();
         }
 
         private void Start()
         {
             _anim.SetTrigger("Sitting");
             _originRotate = this.transform.localEulerAngles;
-            _audioSource.clip = SoundManager.Instance.GetClip("SFX_CatSound");
         }
 
         public void SaveData()
@@ -44,7 +41,7 @@ namespace Assets.Scripts.Object
 
         IEnumerator CatRotate()
         {
-            if (_audioSource.clip != null) _audioSource.Play();
+            SoundManager.Instance.PlaySound(SFXName.SFX_CatSound);
             transform.DOLookAt(PlayerViewModel.Instance.Player.transform.position, 1f);
             yield return new WaitForSeconds(2f);
             transform.DOLocalRotate(_originRotate, 1f);

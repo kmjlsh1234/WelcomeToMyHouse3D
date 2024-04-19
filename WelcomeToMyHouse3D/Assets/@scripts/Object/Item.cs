@@ -15,6 +15,7 @@ namespace Assets.Scripts.Object
         {
             _collider = GetComponent<CapsuleCollider>();
             this.gameObject.name.Replace("(Clone)", "");
+            SoundManager.Instance.PlaySound(SFXName.SFX_ItemDrop);
         }
 
         private void OnTriggerEnter(Collider other)
