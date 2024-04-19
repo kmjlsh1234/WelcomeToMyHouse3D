@@ -16,8 +16,12 @@ namespace Assets.Scripts.Object
         protected override void Start()
         {
             base.Start();
-            _keyPrefab = Resources.Load<GameObject>("Pref/GardenMap_BushKey");
-            InstantiateKey();
+            if (!CheckItem())
+            {
+                _keyPrefab = Resources.Load<GameObject>("Pref/GardenMap_BushKey");
+                InstantiateKey();
+            }
+                
         }
 
         public override void TouchEvent()
@@ -27,8 +31,9 @@ namespace Assets.Scripts.Object
 
         public override void ChoiceAEvent()
         {
-            base.ChoiceAEvent();
+            if (CheckItem()) return;
             
+            base.ChoiceAEvent();
             _key.SetActive(true);
             var targetPos = new Vector3(-0.6f, 0.15f, 0f);
             _key.transform.DOLocalJump(targetPos, 1f, 1, 1f);

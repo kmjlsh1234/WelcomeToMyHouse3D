@@ -51,7 +51,6 @@ public class UIPopup_Dialog : MonoBehaviour
 
         _choiceAButton.gameObject.SetActive(false);
         _choiceBButton.gameObject.SetActive(false);
-        _choiceBButton.gameObject.SetActive(false);
     }
     #endregion
 
@@ -62,20 +61,24 @@ public class UIPopup_Dialog : MonoBehaviour
     {
         if (_scriptNum == _data.InteractionScript.Length)
         {
-            if (_data.ObjectType == ObjectType.NotChoiceObject)
-                UIManager.Instance.Hide(PopupStyle.Dialog);
-            else if (_data.ObjectType == ObjectType.ChoiceObject)
-                ButtonShow();
-
-            return;
+            switch(_data.ObjectType)
+            {
+                case ObjectType.NotChoiceObject:
+                    UIManager.Instance.Hide(PopupStyle.Dialog);
+                    break;
+                case ObjectType.ChoiceObject:
+                    ButtonShow();
+                    break;
+            }
         }
+        else
+        {
+            if (_typingCoroutine != null) StopCoroutine(_typingCoroutine);
+            _typingCoroutine = StartCoroutine(TypingText(_data.InteractionScript[_scriptNum]));
 
-
-        if (_typingCoroutine != null)
-            StopCoroutine(_typingCoroutine);
-
-        _typingCoroutine = StartCoroutine(TypingText(_data.InteractionScript[_scriptNum]));
-        _scriptNum++;
+            _scriptNum++;
+        }
+        
     }
 
     private void OnClickChoiceA()
@@ -90,6 +93,7 @@ public class UIPopup_Dialog : MonoBehaviour
         UIManager.Instance.Hide(PopupStyle.Dialog);
     }
     #endregion
+
     private void ButtonShow()
     {
         _choiceAButton.gameObject.SetActive(true);

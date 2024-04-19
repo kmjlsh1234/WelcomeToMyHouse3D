@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using Assets.Scripts.Manager.Base;
 using Assets.Scripts.Player;
+using System.IO;
+using Assets.Scripts.Common;
 
 namespace Assets.Scripts.Manager
 {
     public class DataManager : SingletonBase<DataManager>
     {
-        private const string USERDATA = "USERDATA";
-        public PlayerData PlayerData = null;
+        private const string SAVEPATH = "/playerData.json";
 
         private void Start()
         {
@@ -18,22 +19,29 @@ namespace Assets.Scripts.Manager
 
         public void LoadData()
         {
-            PlayerData = ES3.Load<PlayerData>(USERDATA, defaultValue : null);
-            if(PlayerData == null)
+            if (File.Exists(SAVEPATH))
             {
-                PlayerData = new PlayerData();
-                SaveData();
+                var jsonData = File.ReadAllText(SAVEPATH);
+                var data = JsonUtility.FromJson<PlayerData>(jsonData);
+                PlayerViewModel.Instance.PlayerData = data;
+            }
+            else
+            {
+                PlayerViewModel.Instance.PlayerData = new PlayerData();
+
+                PlayerViewModel.Instance.PlayerData.CurMapType = MapType.GardenMap;
+                PlayerViewModel.Instance.PlayerData.QuestName = QuestName.GardenMap_OpenDoor;
+                PlayerViewModel.Instance.PlayerData.ItemList = new List<ItemName>();
             }
         }
 
         public void SaveData()
         {
-            Transform playerTrans = PlayerViewModel.Instance.Player.gameObject.transform;
-            PlayerData.Position = playerTrans.position;
-            PlayerData.Rotation = playerTrans.rotation.eulerAngles;
-            ES3.Save<PlayerData>(USERDATA, PlayerData);
-            Debug.Log("데이터 저장 완료!");
+            PlayerViewModel.Instance.PlayerData.Position = PlayerViewModel.Instance.Player.transform.position;
+            PlayerViewModel.Instance.PlayerData.Rotation = PlayerViewModel.Instance.Player.transform.rotation.eulerAngles;
 
+           var jsonData = JsonUtility.ToJson(PlayerViewModel.Instance.PlayerData);
+            File.WriteAllText(SAVEPATH, jsonData);
         }
     }
 }

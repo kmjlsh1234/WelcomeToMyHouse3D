@@ -37,7 +37,8 @@ namespace Assets.Scripts.Common
 
     public enum MapType
     {
-        OutSide,
+        GardenMap,
+        FirstFloor,
         InSide
     }
 
@@ -62,6 +63,12 @@ namespace Assets.Scripts.Common
     public enum QuestName
     {
         GardenMap_OpenDoor = 0,
+    }
+
+    public enum DoorCount
+    {
+        FirstDoor,
+        SecondDoor,
     }
 }
 

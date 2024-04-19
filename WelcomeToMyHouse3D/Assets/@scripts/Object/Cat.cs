@@ -3,35 +3,56 @@ using System.Collections.Generic;
 using UnityEngine;
 using Assets.Scripts.Object.Base;
 using Assets.Scripts.Manager;
+using DG.Tweening;
+using Assets.Scripts.Common;
+
 
 namespace Assets.Scripts.Object
 {
-    public class Cat : ObjectBase
+    public class Cat : MonoBehaviour
     {
-        Animator _anim;
+        private CapsuleCollider _collider;
+        private AudioSource _audioSource;
+        private Animator _anim;
+        private Vector3 _originRotate;
+        private Coroutine _coroutine;
+
         private void Awake()
         {
             _anim = GetComponent<Animator>();
-            _anim.SetTrigger("Sitting");
+            _collider = GetComponent<CapsuleCollider>();
+            _audioSource = GetComponent<AudioSource>();
         }
-        /*
-        protected override void NotChoiceObjectInteraction()
-        {
-            ///<summary>첫 인터랙션 시작</summary>
-            if (_interactNum == 0)
-            {
-                PlayerViewModel.Instance.CurrentObjectData = _data;
-                DataManager.Instance.SaveData();
-            }
 
-            _interactNum++;
-            if (_interactNum > _interactionScript.Length)
-            {
-                InteractionFinish();
-                return;
-            }
+        private void Start()
+        {
+            _anim.SetTrigger("Sitting");
+            _originRotate = this.transform.localEulerAngles;
+            _audioSource.clip = SoundManager.Instance.GetClip("SFX_CatSound");
         }
-        */
+
+        public void SaveData()
+        {
+            DataManager.Instance.SaveData();
+            //저장완료 팝업 띄우기
+            _collider.enabled = false;
+            if (_coroutine != null) StopCoroutine(_coroutine);
+            _coroutine = StartCoroutine(CatRotate());
+            
+
+        }
+
+        IEnumerator CatRotate()
+        {
+            if (_audioSource.clip != null) _audioSource.Play();
+            transform.DOLookAt(PlayerViewModel.Instance.Player.transform.position, 1f);
+            yield return new WaitForSeconds(2f);
+            transform.DOLocalRotate(_originRotate, 1f);
+            yield return new WaitForSeconds(1f);
+            _collider.enabled = true;
+            _coroutine = null;
+        }
+
     }
 }
 

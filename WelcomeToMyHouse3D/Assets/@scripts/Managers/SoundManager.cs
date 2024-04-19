@@ -86,6 +86,7 @@ namespace Assets.Scripts.Manager
             else
                 PlayBGM(_nextBGM);
         }
+
     }
 }
 

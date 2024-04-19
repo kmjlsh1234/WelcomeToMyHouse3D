@@ -1,4 +1,5 @@
 using Assets.Scripts.Common;
+using Assets.Scripts.Manager;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace Assets.Scripts.Object
     public class Item : MonoBehaviour
     {
         private CapsuleCollider _collider;
-        [SerializeField]private ItemName _itemName;
+        [SerializeField] private ItemName _itemName;
         private void Awake()
         {
             _collider = GetComponent<CapsuleCollider>();
@@ -21,9 +22,9 @@ namespace Assets.Scripts.Object
             if(other.CompareTag("Player"))
             {
                 _collider.enabled = false;
-                PlayerViewModel.Instance.Inventory.Add(_itemName);
+                PlayerViewModel.Instance.AddItem(_itemName);
+                UIManager.Instance.Show(PopupStyle.ItemShow);
                 gameObject.SetActive(false);
-
             }
         }
     }

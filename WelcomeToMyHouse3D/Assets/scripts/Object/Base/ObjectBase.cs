@@ -9,8 +9,8 @@ namespace Assets.Scripts.Object.Base
 {
     public class ObjectBase : MonoBehaviour
     {
-        protected ObjectType _objectType;
-
+        [SerializeField] protected ObjectType _objectType;
+        [SerializeField] protected ItemName _needItemName;
         protected virtual void Start()
         {
             
@@ -20,9 +20,9 @@ namespace Assets.Scripts.Object.Base
         public virtual void ChoiceAEvent() { }
         public virtual void ChoiceBEvent() { }
 
-        public bool CheckItem(ItemName itemName)
+        public bool CheckItem()
         {
-            var isRegist = PlayerViewModel.Instance.Inventory.Any(item => item == itemName);
+            var isRegist = PlayerViewModel.Instance.PlayerData.ItemList.Any(item => item == _needItemName);
             return isRegist;
         }
     }

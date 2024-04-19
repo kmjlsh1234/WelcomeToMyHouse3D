@@ -1,5 +1,6 @@
 using Assets.Scripts.Common;
 using Assets.Scripts.Manager;
+using Assets.Scripts.Object;
 using Assets.Scripts.Object.Base;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,7 +14,9 @@ namespace Assets.Scripts.Player
     {
         private PlayerController _playerController = null;
         private Camera _camera = null;
+
         [SerializeField] private const float interactionDist = 2f;
+
         private void Awake()
         {
             _playerController = GetComponent<PlayerController>();
@@ -52,6 +55,12 @@ namespace Assets.Scripts.Player
 
                     if(objectBase != null) PlayerViewModel.Instance.CurrentObjectBase = objectBase;
                     UIManager.Instance.Show(PopupStyle.Dialog);
+                }
+
+                else if(hit.collider.CompareTag("Cat"))
+                {
+                    var cat = hitObj.GetComponent<Cat>();
+                    if (cat != null) cat.SaveData();
                 }
             }
         }

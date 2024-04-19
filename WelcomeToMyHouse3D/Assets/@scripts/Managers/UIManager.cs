@@ -35,6 +35,7 @@ namespace Assets.Scripts.Manager
             popup.transform.localScale = Vector3.one;
             popup.name = uiObj.name;
             popup.transform.SetParent(this.transform);
+            //부모 스크립트 컴포넌트 후 SetData() 하기
         }
 
         public void Hide(PopupStyle style)
