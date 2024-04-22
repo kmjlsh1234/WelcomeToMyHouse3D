@@ -15,7 +15,7 @@ namespace Assets.Scripts.Player
         private PlayerController _playerController = null;
         private Camera _camera = null;
 
-        [SerializeField] private const float interactionDist = 2f;
+        [SerializeField] private const float interactionDist = 5f;
 
         private void Awake()
         {
@@ -34,8 +34,8 @@ namespace Assets.Scripts.Player
 
         private void CastRay()
         {
-            
-            Ray ray = new Ray(_camera.transform.position, _camera.transform.forward);
+
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             RaycastHit hit;
 
@@ -49,18 +49,24 @@ namespace Assets.Scripts.Player
 
                     if (objectData != null)
                     {
-                        objectBase.TouchEvent();
                         PlayerViewModel.Instance.CurrentObjectData = objectData;
+                        UIManager.Instance.Show(PopupStyle.Dialog);
                     }
-
                     if(objectBase != null) PlayerViewModel.Instance.CurrentObjectBase = objectBase;
-                    UIManager.Instance.Show(PopupStyle.Dialog);
+
+                    objectBase.TouchEvent();
                 }
 
                 else if(hit.collider.CompareTag("Cat"))
                 {
                     var cat = hitObj.GetComponent<Cat>();
                     if (cat != null) cat.SaveData();
+                }
+
+                else if(hit.collider.CompareTag("Door"))
+                {
+                    var door = hitObj.GetComponent<Door>();
+                    if (door != null) door.DoorActive();
                 }
             }
         }

@@ -18,7 +18,7 @@ public class PlayerViewModel : SingletonBase<PlayerViewModel>
 
     public GameObject CurrentMap { get; set; }
 
-    public PlayerData PlayerData { get; set; }
+    public PlayerData PlayerData; //{ get; set; }
 
     protected override void Awake()
     {

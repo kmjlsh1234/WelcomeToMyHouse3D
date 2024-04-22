@@ -71,22 +71,7 @@ namespace Assets.Scripts.Manager
             }
         }
 
-        public void CheckBGMChange(MapType _mapType)
-        {
-
-            if (_aSourceBGM.clip != null)
-                _curBGMName = _aSourceBGM.clip.name;
-
-            var _nextBGM = _mapType == MapType.InSide ? BGMName.BGM_MainHouse : BGMName.BGM_Wind;
-            var _nextBGMName = _nextBGM.ToString();
-
-            if (_curBGMName == _nextBGMName)
-                return;
-
-            else
-                PlayBGM(_nextBGM);
-        }
-
+        
     }
 }
 

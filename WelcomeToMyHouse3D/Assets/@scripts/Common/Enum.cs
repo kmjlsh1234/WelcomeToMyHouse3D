@@ -11,6 +11,7 @@ namespace Assets.Scripts.Common
         ItemShow,
         Inventory,
         Joystick,
+        Fade,
     }
 
     public enum SceneName
@@ -44,6 +45,7 @@ namespace Assets.Scripts.Common
 
     public enum ItemName
     {
+        None,
         GardenMap_BushKey, //∫∞¿Â √‚¿‘ ø≠ºË
         FirstFloor_Key, //2√˛ √‚¿‘ ø≠ºË
         FirstFloor_Injector, //1√˛ ¡÷ªÁ±‚
@@ -58,12 +60,15 @@ namespace Assets.Scripts.Common
         SFX_DoorOpen,
         SFX_DoorClose,
         SFX_BushSound,
+        SFX_PaperSound,
+        SFX_HorrorAppear,
+        SFX_Siren,
     }
 
     public enum BGMName
     {
-        BGM_Wind,
-        BGM_MainHouse
+        BGM_GardenMap,
+        BGM_FirstFloor,
     }
 
     public enum QuestName
@@ -77,6 +82,14 @@ namespace Assets.Scripts.Common
     {
         FirstDoor,
         SecondDoor,
+    }
+
+    public enum SpiderState
+    {
+        attack1,
+        run,
+        idle,
+        taunt,
     }
 }
 

@@ -9,17 +9,12 @@ namespace Assets.Scripts.Manager
 {
     public class MapManager : SingletonBase<MapManager>
     {
-        private const string MAPPATH = "Map";
+        private const string MAPPATH = "Pref/Map";
         public GameObject[] MapList;
         protected override void Awake()
         {
             base.Awake();
             MapList = Resources.LoadAll<GameObject>(MAPPATH);
-        }
-
-        private void Start()
-        {
-            //GenerateMap(PlayerViewModel.Instance.PlayerData.CurMapType);
         }
 
         public void GenerateMap(MapType type)
@@ -36,10 +31,11 @@ namespace Assets.Scripts.Manager
                 map.name = target.name;
                 map.transform.position = Vector3.zero;
                 map.transform.rotation = Quaternion.identity;
-                map.transform.localScale = Vector3.one;
+                //map.transform.localScale = Vector3.one;
                 PlayerViewModel.Instance.CurrentMap = map;
+                PlayerViewModel.Instance.PlayerData.CurMapType = type;
             }
-            PlayerViewModel.Instance.PlayerData.CurMapType = type;
+            
         }
 
 

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Assets.Scripts.Object.Base;
+using UniRx;
 
 namespace Assets.Scripts.Player
 {
@@ -10,8 +11,9 @@ namespace Assets.Scripts.Player
         [Header("PlayerMove&Rotate")]
         [SerializeField] private float turnSpeed = 4.0f; // 마우스 회전 속도
         [SerializeField] private float _speed;
-        [SerializeField] private float _normalSpeed = 5f;
-        [SerializeField] private float _runSpeed = 10f;
+        private float _normalSpeed = 4f;
+        private float _runSpeed = 6f;
+
         [SerializeField] private float gravity = 10f;
         [SerializeField] private float lookSensitivity;
         [SerializeField] private float cameraRotationLimit;
@@ -24,13 +26,22 @@ namespace Assets.Scripts.Player
 
         public bool _canMove { get; set; } = true;
         public bool _canRotate { get; set; } = true;
-
+        private bool isMove;
         [SerializeField] private Transform _camera;
+
+        [SerializeField] private AudioSource _walkSource;
+        [SerializeField] private AudioSource _runSource;
+
 
         private void Awake()
         {
             rigid = GetComponent<Rigidbody>();           // Rigidbody를 가져온다.
             transform.rotation = Quaternion.identity;   // 회전 상태를 정면으로 초기화
+        }
+
+        private void Start()
+        {
+            this.ObserveEveryValueChanged(x => x.isMove).Subscribe(x => SoundController()).AddTo(gameObject);
         }
 
         void Update()
@@ -39,10 +50,25 @@ namespace Assets.Scripts.Player
             if (_canRotate) Rotate();
         }
 
+        private void SoundController()
+        {
+            if(!isMove)
+            {
+                _walkSource.enabled = false;
+                _runSource.enabled = false;
+            }
+            else
+            {
+                if (_speed == _runSpeed) _runSource.enabled = true;
+                else _walkSource.enabled = true;
+            }
+        }
+
         #region :::: PlayerMove
 
         void Move()
         {
+            _speed = Input.GetKey(KeyCode.LeftShift) ? _runSpeed : _normalSpeed;
             float _moveDirX = Input.GetAxisRaw("Horizontal");
             float _moveDirZ = Input.GetAxisRaw("Vertical");
 
@@ -51,6 +77,7 @@ namespace Assets.Scripts.Player
 
             Vector3 _velocity = (_moveHorizontal + _moveVertical).normalized * _speed;
 
+            isMove = _velocity == Vector3.zero ? false : true;
             rigid.MovePosition(transform.position + _velocity * Time.deltaTime);
         }
 

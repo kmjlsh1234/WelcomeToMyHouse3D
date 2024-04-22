@@ -15,13 +15,7 @@ namespace Assets.Scripts.Object
             base.ChoiceAEvent();
             if (CheckItem())
             {
-                SoundManager.Instance.PlaySound(SFXName.SFX_DoorOpen);
-                
-                //fadeÀç»ý
-                MapManager.Instance.GenerateMap(MapType.FirstFloor);
-                PlayerViewModel.Instance.MovePlayerPos(MapType.FirstFloor, DoorCount.FirstDoor);
-                if (PlayerViewModel.Instance.PlayerData.QuestName == 0)
-                    PlayerViewModel.Instance.PlayerData.QuestName = QuestName.GardenMap_OpenDoor;
+                StartCoroutine(DoorOpen());
             }
                 
 
@@ -37,6 +31,17 @@ namespace Assets.Scripts.Object
         public override void ChoiceBEvent()
         {
             base.ChoiceBEvent();
+        }
+
+        IEnumerator DoorOpen()
+        {
+            SoundManager.Instance.PlaySound(SFXName.SFX_DoorOpen);
+            UIManager.Instance.Show(PopupStyle.Fade);
+            yield return new WaitForSeconds(1.5f);
+            MapManager.Instance.GenerateMap(MapType.FirstFloor);
+            PlayerViewModel.Instance.MovePlayerPos(MapType.FirstFloor, DoorCount.FirstDoor);
+            if (PlayerViewModel.Instance.PlayerData.QuestName == 0)
+                PlayerViewModel.Instance.PlayerData.QuestName = QuestName.GardenMap_OpenDoor;
         }
     }
 }

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Item
   - Cat
+  - Door
   layers:
   - Default
   - TransparentFX

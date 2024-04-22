@@ -8,43 +8,36 @@ using Assets.Scripts.Common;
 using DG.Tweening;
 using UniRx;
 using System.Linq;
+using Assets.Scripts.UI;
 
 namespace Assets.Scripts.Manager
 {
     public class UIManager : SingletonBase<UIManager>
     {
-        public GameObject[] PopupList;
-        private const string UIPATH = "UI";
-        protected CompositeDisposable CancelerObject;
+        public PopupBase[] PopupList;
 
         protected override void Awake()
         {
             base.Awake();
-            PopupList = Resources.LoadAll<GameObject>(UIPATH);
+            var canvas = GameObject.FindAnyObjectByType<Canvas>().transform;
+            PopupList = canvas.GetComponentsInChildren<PopupBase>();
+
+            foreach (PopupBase child in PopupList)
+                child.gameObject.SetActive(false);
         }
 
         public void Show(PopupStyle style)
         {
-            var uiObj = PopupList.FirstOrDefault(x => x.name.Contains(style.ToString()));
-            if (uiObj == null) return;
+            var uiObj = PopupList.FirstOrDefault(x => x._style == style);
 
-            GameObject popup = null;
-            popup = Instantiate(uiObj);
-            popup.transform.position = Vector3.zero;
-            popup.transform.rotation = Quaternion.identity;
-            popup.transform.localScale = Vector3.one;
-            popup.name = uiObj.name;
-            popup.transform.SetParent(this.transform);
-            //부모 스크립트 컴포넌트 후 SetData() 하기
+            uiObj.gameObject.SetActive(true);
+            uiObj.SetData();
         }
 
         public void Hide(PopupStyle style)
         {
-            foreach(Transform child in this.transform)
-            {
-                if (child.name.Contains(style.ToString()))
-                    child.gameObject.SetActive(false);
-            }
+            var uiObj = PopupList.FirstOrDefault(x => x._style == style);
+            uiObj.gameObject.SetActive(false);
         }
 
     }

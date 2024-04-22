@@ -9,8 +9,10 @@ namespace Assets.Scripts.Map
         public Vector3 FirstDoor { get { return _firstDoor.position; } }
         public Vector3 SecondDoor { get { return _secondDoor.position; } }
 
-        [SerializeField] private Transform _firstDoor;
-        [SerializeField] private Transform _secondDoor;
+        [SerializeField] protected Transform _firstDoor;
+        [SerializeField] protected Transform _secondDoor;
+
+        public virtual void MapEnterEvent() { }
     }
 }
 

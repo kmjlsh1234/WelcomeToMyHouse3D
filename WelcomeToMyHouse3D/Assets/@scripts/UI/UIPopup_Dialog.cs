@@ -8,106 +8,110 @@ using Assets.Scripts.Util;
 using Assets.Scripts.Manager;
 using Assets.Scripts.Common;
 
-public class UIPopup_Dialog : MonoBehaviour
+namespace Assets.Scripts.UI
 {
-    [SerializeField] private TMP_Text _infoText;
-    [SerializeField] private TMP_Text _choiceAText;
-    [SerializeField] private TMP_Text _choiceBText;
-
-    [SerializeField] private Button _choiceAButton;
-    [SerializeField] private Button _choiceBButton;
-    [SerializeField] private Button _dialogButton;
-    private PopupStyle _popupStyle;
-
-    private const float TYPING_SPEED = 0.05f;
-    private int _scriptNum = 0;
-    private ObjectData _data = null;
-
-    private Coroutine _typingCoroutine = null;
-
-    private void Start()
+    public class UIPopup_Dialog : PopupBase
     {
-        AddEvent();
-        SetData();
-        Dialog();
-    }
+        [SerializeField] private TMP_Text _infoText;
+        [SerializeField] private TMP_Text _choiceAText;
+        [SerializeField] private TMP_Text _choiceBText;
 
-    #region ::::InitSetting
-    private void AddEvent()
-    {
-        _choiceAButton.OnSoundClickAsObservable().Subscribe(_ => OnClickChoiceA()).AddTo(gameObject);
-        _choiceBButton.OnSoundClickAsObservable().Subscribe(_ => OnClickChoiceB()).AddTo(gameObject);
-        _dialogButton.OnSoundClickAsObservable().Subscribe(_ => Dialog()).AddTo(gameObject);
-    }
+        [SerializeField] private Button _choiceAButton;
+        [SerializeField] private Button _choiceBButton;
+        [SerializeField] private Button _dialogButton;
+        private PopupStyle _popupStyle;
 
-    public void SetData()
-    {
-        _data = PlayerViewModel.Instance.CurrentObjectData;
-        _choiceAText.text = _data.ChoiceA;
-        _choiceBText.text = _data.ChoiceB;
-        _scriptNum = 0;
+        private const float TYPING_SPEED = 0.05f;
+        private int _scriptNum = 0;
+        private ObjectData _data = null;
 
-        _infoText.text = string.Empty;
+        private Coroutine _typingCoroutine = null;
 
-        _choiceAButton.gameObject.SetActive(false);
-        _choiceBButton.gameObject.SetActive(false);
-    }
-    #endregion
-
-
-
-    #region ::::ButtonMethod
-    public void Dialog()
-    {
-        if (_scriptNum == _data.InteractionScript.Length)
+        private void Start()
         {
-            switch(_data.ObjectType)
+            AddEvent();
+        }
+
+        #region ::::InitSetting
+        private void AddEvent()
+        {
+            _choiceAButton.OnSoundClickAsObservable().Subscribe(_ => OnClickChoiceA()).AddTo(gameObject);
+            _choiceBButton.OnSoundClickAsObservable().Subscribe(_ => OnClickChoiceB()).AddTo(gameObject);
+            _dialogButton.OnSoundClickAsObservable().Subscribe(_ => Dialog()).AddTo(gameObject);
+        }
+
+        public override void SetData()
+        {
+            _data = PlayerViewModel.Instance.CurrentObjectData;
+            _choiceAText.text = _data.ChoiceA;
+            _choiceBText.text = _data.ChoiceB;
+            _scriptNum = 0;
+
+            _infoText.text = string.Empty;
+
+            _choiceAButton.gameObject.SetActive(false);
+            _choiceBButton.gameObject.SetActive(false);
+
+            Dialog();
+        }
+        #endregion
+
+
+
+        #region ::::ButtonMethod
+        public void Dialog()
+        {
+            if (_scriptNum == _data.InteractionScript.Length)
             {
-                case ObjectType.NotChoiceObject:
-                    UIManager.Instance.Hide(PopupStyle.Dialog);
-                    break;
-                case ObjectType.ChoiceObject:
-                    ButtonShow();
-                    break;
+                switch (_data.ObjectType)
+                {
+                    case ObjectType.NotChoiceObject:
+                        UIManager.Instance.Hide(PopupStyle.Dialog);
+                        break;
+                    case ObjectType.ChoiceObject:
+                        ButtonShow();
+                        break;
+                }
             }
+            else
+            {
+                if (_typingCoroutine != null) StopCoroutine(_typingCoroutine);
+                _typingCoroutine = StartCoroutine(TypingText(_data.InteractionScript[_scriptNum]));
+
+                _scriptNum++;
+            }
+
         }
-        else
-        {
-            if (_typingCoroutine != null) StopCoroutine(_typingCoroutine);
-            _typingCoroutine = StartCoroutine(TypingText(_data.InteractionScript[_scriptNum]));
 
-            _scriptNum++;
+        private void OnClickChoiceA()
+        {
+            PlayerViewModel.Instance.CurrentObjectBase.ChoiceAEvent();
+            UIManager.Instance.Hide(PopupStyle.Dialog);
         }
-        
-    }
 
-    private void OnClickChoiceA()
-    {
-        PlayerViewModel.Instance.CurrentObjectBase.ChoiceAEvent();
-        UIManager.Instance.Hide(PopupStyle.Dialog);
-    }
-
-    private void OnClickChoiceB()
-    {
-        PlayerViewModel.Instance.CurrentObjectBase.ChoiceBEvent();
-        UIManager.Instance.Hide(PopupStyle.Dialog);
-    }
-    #endregion
-
-    private void ButtonShow()
-    {
-        _choiceAButton.gameObject.SetActive(true);
-        _choiceBButton.gameObject.SetActive(true);
-    }
-
-    IEnumerator TypingText(string targetText)
-    {
-        _infoText.text = string.Empty;
-        var charLength = targetText.Length;
-        for(int i=0;i<charLength;i++)
+        private void OnClickChoiceB()
         {
-            _infoText.text += targetText[i];
-            yield return new WaitForSeconds(TYPING_SPEED);
+            PlayerViewModel.Instance.CurrentObjectBase.ChoiceBEvent();
+            UIManager.Instance.Hide(PopupStyle.Dialog);
+        }
+        #endregion
+
+        private void ButtonShow()
+        {
+            _choiceAButton.gameObject.SetActive(true);
+            _choiceBButton.gameObject.SetActive(true);
+        }
+
+        IEnumerator TypingText(string targetText)
+        {
+            _infoText.text = string.Empty;
+            var charLength = targetText.Length;
+            for (int i = 0; i < charLength; i++)
+            {
+                _infoText.text += targetText[i];
+                yield return new WaitForSeconds(TYPING_SPEED);
+            }
         }
     }
 }
+

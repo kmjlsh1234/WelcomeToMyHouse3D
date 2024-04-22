@@ -7,31 +7,30 @@ using DG.Tweening;
 using Assets.Scripts.Manager;
 using Assets.Scripts.Common;
 
-public class UIPopup_ItemShow : MonoBehaviour
+namespace Assets.Scripts.UI
 {
-    [SerializeField] private TMP_Text _titleText;
-    private Coroutine _showCoroutine;
-
-    private void Start()
+    public class UIPopup_ItemShow : PopupBase
     {
-        SetData();
-    }
+        [SerializeField] private TMP_Text _titleText;
+        private Coroutine _showCoroutine;
 
-    private void SetData()
-    {
-        _titleText.text = $"{PlayerViewModel.Instance.CurrentItemName} È¹µæ";
-        if (_showCoroutine != null) StopCoroutine(_showCoroutine);
-        _showCoroutine = StartCoroutine(ShowPopup());
-    }
+        public override void SetData()
+        {
+            _titleText.text = $"{PlayerViewModel.Instance.CurrentItemName} È¹µæ";
+            if (_showCoroutine != null) StopCoroutine(_showCoroutine);
+            _showCoroutine = StartCoroutine(ShowPopup());
+        }
 
 
-    IEnumerator ShowPopup()
-    {
-        _titleText.DOFade(0f, 0f);
-        _titleText.DOFade(1f, 1f);
-        yield return new WaitForSeconds(2f);
-        _titleText.DOFade(0f, 1f);
-        yield return new WaitForSeconds(1f);
-        UIManager.Instance.Hide(PopupStyle.ItemShow);
+        IEnumerator ShowPopup()
+        {
+            _titleText.DOFade(0f, 0f);
+            _titleText.DOFade(1f, 1f);
+            yield return new WaitForSeconds(2f);
+            _titleText.DOFade(0f, 1f);
+            yield return new WaitForSeconds(1f);
+            UIManager.Instance.Hide(PopupStyle.ItemShow);
+        }
     }
 }
+

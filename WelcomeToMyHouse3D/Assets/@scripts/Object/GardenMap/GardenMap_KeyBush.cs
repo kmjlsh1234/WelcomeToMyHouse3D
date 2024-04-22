@@ -15,7 +15,7 @@ namespace Assets.Scripts.Object
 
         private void Start()
         {
-            if (CheckItem()) return;
+            //if (CheckItem()) return;
 
             _keyPrefab = Resources.Load<GameObject>("Pref/GardenMap_BushKey");
             InstantiateKey();
