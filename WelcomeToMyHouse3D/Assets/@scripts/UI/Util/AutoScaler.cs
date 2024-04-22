@@ -11,7 +11,7 @@ namespace Assets.Scripts.UI.Util
 
         private void Start()
         {
-            var canvasScaler = ObjectFinder.FindParent<CanvasScaler>(transform);
+            var canvasScaler = GameObject.FindObjectOfType<CanvasScaler>();
             if (canvasScaler == null) return;
             var canvasRect = canvasScaler.GetComponent<RectTransform>();
             if (canvasRect == null) return;
