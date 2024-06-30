@@ -32,6 +32,16 @@ namespace Assets.Scripts.UI
             yield return new WaitForSeconds(3f);
             UIManager.Instance.Hide(_style);
         }
+
+        public override void Dispose()
+        {
+            _image = null;
+            if (_fadeRoutine != null)
+            {
+                StopCoroutine(_fadeRoutine);
+                _fadeRoutine = null;
+            }
+        }
     }
 }
 

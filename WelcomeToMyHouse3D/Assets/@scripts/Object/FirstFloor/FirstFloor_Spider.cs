@@ -34,8 +34,7 @@ namespace Assets.Scripts.Object
 
         private void Start()
         {
-            _moveGround = PlayerViewModel.Instance.CurrentMap.GetComponent<FirstFloor>().Collider;
-            //UpdatePatrolState();
+
         }
 
         private void PlayAnimation(SpiderState state)

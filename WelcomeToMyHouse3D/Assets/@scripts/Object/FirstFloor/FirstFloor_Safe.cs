@@ -9,6 +9,7 @@ namespace Assets.Scripts.Object
 {
     public class FirstFloor_Safe : ObjectBase
     {
+        [SerializeField] private GameObject _injector;
         private AudioSource _audioSource;
         private const string KEYCODE = "1002";
         private FirstFloor_SafeButton _buttons;
@@ -23,19 +24,26 @@ namespace Assets.Scripts.Object
             _buttons = GetComponentInChildren<FirstFloor_SafeButton>();
             if (CheckItem()) _anim.SetTrigger("Opened");
             else _anim.SetTrigger("Closed");
-            
+            _injector.SetActive(false);
         }
 
         public override void TouchEvent()
         {
-            base.TouchEvent();
+            
             if(!CheckItem())
             {
+                base.TouchEvent();
+                var _cameraLight = PlayerViewModel.Instance.Player.Light;
+
                 PlayerViewModel.Instance.Player._canMove = false;
                 PlayerViewModel.Instance.Player._canRotate = false;
+
                 Camera.main.transform.SetParent(transform);
                 Camera.main.transform.DOLocalMove(new Vector3(-0.28f,0.15f,0.01f),1f);
                 Camera.main.transform.DOLocalRotate(new Vector3(0f, 90f, 0f), 1f);
+                _cameraLight.transform.DOLocalRotate(Vector3.zero, 1f);
+                _cameraLight.DOIntensity(0.1f, 1f);
+
                 _collider.enabled = false;
                 _buttons.gameObject.SetActive(true);
                 _buttons.ResetData();
@@ -66,6 +74,7 @@ namespace Assets.Scripts.Object
             _buttons.gameObject.SetActive(false);
             CameraReset();
             _anim.SetTrigger("Open");
+            _injector.SetActive(true);
         }
 
         private void UnValidCode()
@@ -77,12 +86,22 @@ namespace Assets.Scripts.Object
 
         private void CameraReset()
         {
+            var _cameraLight = PlayerViewModel.Instance.Player.Light;
+
             Camera.main.transform.SetParent(PlayerViewModel.Instance.Player.transform);
             Camera.main.transform.DOLocalMove(Vector3.up * 1.6f, 1f);
+            _cameraLight.transform.DOLocalRotate(new Vector3(38f, 0f, 0f), 1f);
+            _cameraLight.DOIntensity(4f, 1f);
+
             Camera.main.transform.DOLocalRotate(Vector3.zero, 1f).OnComplete(() => {
                 PlayerViewModel.Instance.Player._canMove = true;
                 PlayerViewModel.Instance.Player._canRotate = true;
             });
+        }
+
+        public void InjectorMove()
+        {
+            _injector.transform.DOLocalMove(new Vector3(-0.276f, -0.456f, 0f),2f);
         }
 
     }

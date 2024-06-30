@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using Assets.Scripts.Manager;
 using Assets.Scripts.Common;
+using UniRx;
 
 namespace Assets.Scripts.UI
 {
@@ -14,9 +15,13 @@ namespace Assets.Scripts.UI
         [SerializeField] private TMP_Text _titleText;
         private Coroutine _showCoroutine;
 
+        private void Start()
+        {
+            PlayerViewModel.Instance.ObserveEveryValueChanged(x => x.InformationText).Subscribe(x => _titleText.text = x).AddTo(gameObject);
+        }
+
         public override void SetData()
         {
-            _titleText.text = $"{PlayerViewModel.Instance.CurrentItemName} È¹µæ";
             if (_showCoroutine != null) StopCoroutine(_showCoroutine);
             _showCoroutine = StartCoroutine(ShowPopup());
         }
@@ -29,7 +34,7 @@ namespace Assets.Scripts.UI
             yield return new WaitForSeconds(2f);
             _titleText.DOFade(0f, 1f);
             yield return new WaitForSeconds(1f);
-            UIManager.Instance.Hide(PopupStyle.ItemShow);
+            UIManager.Instance.Hide(_style);
         }
     }
 }

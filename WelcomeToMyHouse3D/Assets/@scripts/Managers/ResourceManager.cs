@@ -7,14 +7,16 @@ using Assets.Scripts.Manager.Base;
 public class ResourceManager : SingletonBase<ResourceManager>
 {
     public List<ObjectData> ObjectDataList = new List<ObjectData>();
+    public List<ItemData> ItemDataList = new List<ItemData>();
 
     protected override void Awake()
     {
         base.Awake();
+        LoadObjectData();
         LoadItemData();
     }
 
-    public void LoadItemData()
+    public void LoadObjectData()
     {
         ObjectDataList.Clear();
 
@@ -26,6 +28,17 @@ public class ResourceManager : SingletonBase<ResourceManager>
         }
     }
 
+    public void LoadItemData()
+    {
+        ItemDataList.Clear();
+
+        ItemData[] ItemDatas = Resources.LoadAll<ItemData>("Data/ItemData");
+
+        foreach (ItemData itemData in ItemDatas)
+        {
+            ItemDataList.Add(itemData);
+        }
+    }
 
     public Sprite LoadSprite(string fileName)
     {

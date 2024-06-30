@@ -8,10 +8,11 @@ namespace Assets.Scripts.Map
 {
     public class GardenMap : MapBase
     {
-        private void Start()
+        private void OnEnable()
         {
             SoundManager.Instance.PlayBGM(BGMName.BGM_GardenMap);
         }
+
     }
 }
 

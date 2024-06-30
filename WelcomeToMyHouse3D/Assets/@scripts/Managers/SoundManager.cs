@@ -48,7 +48,6 @@ namespace Assets.Scripts.Manager
         public void PlaySound(SFXName sfxName)
         {
             var clipName = sfxName.ToString();
-            Debug.Log("ClipName : " + clipName);
             if (_audioLibrary.TryGetValue(clipName, out AudioClip clip))
                 _aSourceSFX.PlayOneShot(clip);
             else

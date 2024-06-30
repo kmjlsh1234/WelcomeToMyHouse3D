@@ -32,7 +32,9 @@ namespace Assets.Scripts.Manager
             else
             {
                 PlayerViewModel.Instance.PlayerData = new PlayerData();
-                
+
+                PlayerViewModel.Instance.Player.gameObject.transform.position = new Vector3(-34.8f, 2f, -28.5f);
+                PlayerViewModel.Instance.Player.gameObject.transform.eulerAngles = Vector3.up * 90f;
                 PlayerViewModel.Instance.PlayerData.CurMapType = MapType.GardenMap;
                 PlayerViewModel.Instance.PlayerData.QuestName = QuestName.GardenMap_OpenDoor;
                 PlayerViewModel.Instance.PlayerData.ItemList = new List<ItemName>();

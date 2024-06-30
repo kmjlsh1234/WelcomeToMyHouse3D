@@ -7,12 +7,16 @@ using Assets.Scripts.Object.Base;
 using Assets.Scripts.Common;
 using Assets.Scripts.Manager;
 using Assets.Scripts.Map;
+using System.Linq;
 
 public class PlayerViewModel : SingletonBase<PlayerViewModel>
 {
     public PlayerController Player;
 
     public ItemName CurrentItemName { get; set; }
+    public string CurrentObjectName { get; set; }
+    public string InformationText { get; set; }
+
     public ObjectData CurrentObjectData { get; set; }
     public ObjectBase CurrentObjectBase { get; set; }
 
@@ -35,7 +39,8 @@ public class PlayerViewModel : SingletonBase<PlayerViewModel>
     public void AddItem(ItemName itemName)
     {
         PlayerData.ItemList.Add(itemName);
-        CurrentItemName = itemName;
+        var data = ResourceManager.Instance.ItemDataList.FirstOrDefault(x => x.name == itemName.ToString());
+        if (data != null) InformationText = $"{data.RealItemName} È¹µæ";
     }
 
     public void MovePlayerPos(MapType type, DoorCount doorCount)

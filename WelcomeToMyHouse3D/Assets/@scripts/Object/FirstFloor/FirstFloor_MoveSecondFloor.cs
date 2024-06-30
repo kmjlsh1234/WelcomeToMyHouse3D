@@ -9,35 +9,36 @@ using Assets.Scripts.Common;
 
 namespace Assets.Scripts.Object
 {
-    public class FirstFloor_MoveSecondFloor : ObjectBase
+    public class FirstFloor_MoveSecondFloor : Door
     {
-        public override void TouchEvent()
-        {
-            base.TouchEvent();
-            if (!CheckItem()) StartCoroutine(DeadEvent());
-            else Debug.LogError("2ÃþÀ¸·Î ÀÌµ¿");
-                    
-        }
-        IEnumerator DeadEvent()
-        {
-            PlayerViewModel.Instance.Player._canMove = false;
-            PlayerViewModel.Instance.Player._canRotate = false;
-            var map = PlayerViewModel.Instance.CurrentMap.GetComponent<FirstFloor>();
-            map.VirtualCamera.transform.position = Camera.main.transform.position;
-            
+        [SerializeField] protected ItemName _needItemName = ItemName.None;
+        [SerializeField] private FloorBase _firstFloorBase;
+        [SerializeField] private FloorBase _secondFloorBase;
+        [SerializeField] private SecondFloor_Door _secondFloorDoor;
 
-            map.Spider.StopPatrol();
-            map.Spider.transform.SetParent(map.DeadEventSpiderPos);
-            map.Spider.transform.position = Vector3.zero;
-            map.Spider.transform.rotation = Quaternion.identity;
-            map.VirtualCamera.gameObject.SetActive(true);
-            map.VirtualCamera.transform.DOLookAt(map.Spider.transform.position, 1f, AxisConstraint.Y);
-            map.Spider.transform.DOMove(PlayerViewModel.Instance.Player.transform.position + Vector3.back*2f,2f).SetEase(Ease.InExpo);
-            SoundManager.Instance.PlaySound(SFXName.SFX_HorrorAppear);
-            yield return new WaitForSeconds(2f);
-            map.Spider.SpiderState = Common.SpiderState.taunt;
-            yield return new WaitForSeconds(2f);
-            map.Spider.SpiderState = Common.SpiderState.run;
+        public override void DoorActive()
+        {
+            if (CheckItem())
+            {
+                base.DoorActive();
+                if (_doorState == DoorState.DoorOpen)
+                {
+                    _secondFloorDoor.ForceCloseDoor();
+                    _firstFloorBase.PropActive(true);
+                    _secondFloorBase.PropActive(false);
+                }
+            }
+            else
+            {
+                SoundManager.Instance.PlaySound(SFXName.SFX_DoorClose);
+                transform.DOShakePosition(0.5f);
+            }
+        }
+        
+        public bool CheckItem()
+        {
+            var isRegist = PlayerViewModel.Instance.PlayerData.ItemList.Contains(_needItemName);
+            return isRegist;
         }
     }
 }

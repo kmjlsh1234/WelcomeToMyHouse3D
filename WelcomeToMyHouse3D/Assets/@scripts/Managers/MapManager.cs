@@ -10,31 +10,47 @@ namespace Assets.Scripts.Manager
     public class MapManager : SingletonBase<MapManager>
     {
         private const string MAPPATH = "Pref/Map";
-        public GameObject[] MapList;
+        public GameObject[] MapPrefabs;
+        public List<GameObject> GenerateMapList = new List<GameObject>();
         protected override void Awake()
         {
             base.Awake();
-            MapList = Resources.LoadAll<GameObject>(MAPPATH);
+            MapPrefabs = Resources.LoadAll<GameObject>(MAPPATH);
         }
 
         public void GenerateMap(MapType type)
         {
-            if (PlayerViewModel.Instance.CurrentMap != null)
+            //¸Ê ÀüºÎ ²ô±â
+            if(GenerateMapList.Count>0)
             {
-                Destroy(PlayerViewModel.Instance.CurrentMap);
+                foreach (GameObject map in GenerateMapList)
+                    map.SetActive(false);
             }
 
-            GameObject target = MapList.FirstOrDefault(x => x.name.Contains(type.ToString()));
-            if (target != null)
+            var generatedMap = GenerateMapList.FirstOrDefault(x => x.name.Contains(type.ToString()));
+
+            if(generatedMap != null)
             {
-                var map = Instantiate(target);
-                map.name = target.name;
-                map.transform.position = Vector3.zero;
-                map.transform.rotation = Quaternion.identity;
-                //map.transform.localScale = Vector3.one;
-                PlayerViewModel.Instance.CurrentMap = map;
-                PlayerViewModel.Instance.PlayerData.CurMapType = type;
+                generatedMap.SetActive(true);
+                PlayerViewModel.Instance.CurrentMap = generatedMap;
             }
+
+            else
+            {
+                GameObject target = MapPrefabs.FirstOrDefault(x => x.name.Contains(type.ToString()));
+                if (target != null)
+                {
+                    var map = Instantiate(target);
+                    map.name = target.name;
+                    map.transform.rotation = Quaternion.identity;
+                    PlayerViewModel.Instance.CurrentMap = map;
+                    PlayerViewModel.Instance.PlayerData.CurMapType = type;
+                    GenerateMapList.Add(map);
+                }
+            }
+
+
+            
             
         }
 

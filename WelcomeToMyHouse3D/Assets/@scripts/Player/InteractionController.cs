@@ -42,19 +42,14 @@ namespace Assets.Scripts.Player
             if (Physics.Raycast(ray, out hit, interactionDist))
             {
                 var hitObj = hit.collider.gameObject;
-                if (hit.collider.CompareTag("Item"))
+                if (hit.collider.CompareTag("Object"))
                 {
                     var objectBase = hitObj.GetComponent<ObjectBase>();
-                    var objectData = ResourceManager.Instance.ObjectDataList.FirstOrDefault(x => x.name == hitObj.name);
-
-                    if (objectData != null)
+                    if (objectBase != null)
                     {
-                        PlayerViewModel.Instance.CurrentObjectData = objectData;
-                        UIManager.Instance.Show(PopupStyle.Dialog);
-                    }
-                    if(objectBase != null) PlayerViewModel.Instance.CurrentObjectBase = objectBase;
-
-                    objectBase.TouchEvent();
+                        PlayerViewModel.Instance.CurrentObjectBase = objectBase;
+                        objectBase.TouchEvent();
+                    } 
                 }
 
                 else if(hit.collider.CompareTag("Cat"))

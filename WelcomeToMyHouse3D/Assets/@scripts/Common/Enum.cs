@@ -12,6 +12,7 @@ namespace Assets.Scripts.Common
         Inventory,
         Joystick,
         Fade,
+        InfoShow,
     }
 
     public enum SceneName
@@ -39,14 +40,15 @@ namespace Assets.Scripts.Common
     public enum MapType
     {
         GardenMap,
-        FirstFloor,
-        InSide
+        FirstMap,
+        SecondMap,
     }
 
     public enum ItemName
     {
         None,
         GardenMap_BushKey, //별장 출입 열쇠
+        GardenMap_FlashLight, //손전등
         FirstFloor_Key, //2층 출입 열쇠
         FirstFloor_Injector, //1층 주사기
     }
@@ -63,6 +65,11 @@ namespace Assets.Scripts.Common
         SFX_PaperSound,
         SFX_HorrorAppear,
         SFX_Siren,
+        SFX_GetItem,
+        SFX_Gag,
+        SFX_Curtain,
+        SFX_MetalDoorOpen,
+        SFX_Injector,
     }
 
     public enum BGMName
@@ -75,7 +82,7 @@ namespace Assets.Scripts.Common
     {
         GardenMap_OpenDoor = 0, //정원 문 열기
         FirstFloor_GetInjector = 1,
-        FirstFloor_OpenDoor = 2,
+        SecondFloor_GetSaw = 2,
     }
 
     public enum DoorCount

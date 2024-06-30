@@ -1,6 +1,7 @@
 using Assets.Scripts.Common;
 using Assets.Scripts.Manager;
 using Assets.Scripts.Object.Base;
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,13 +12,20 @@ namespace Assets.Scripts.Object
     {
         public override void TouchEvent()
         {
-            base.TouchEvent();
-            UIManager.Instance.Hide(PopupStyle.Dialog);
-            StartCoroutine(DoorOpen());
+            if (CheckItem())
+            {
+                base.TouchEvent();
+                StartCoroutine(DoorOpen());
+            }
+
+            else
+            {
+                SoundManager.Instance.PlaySound(SFXName.SFX_DoorClose);
+                transform.DOShakePosition(0.5f); 
+            }
         }
         IEnumerator DoorOpen()
         {
-            SoundManager.Instance.PlaySound(SFXName.SFX_DoorOpen);
             UIManager.Instance.Show(PopupStyle.Fade);
             yield return new WaitForSeconds(1.5f);
             MapManager.Instance.GenerateMap(MapType.GardenMap);

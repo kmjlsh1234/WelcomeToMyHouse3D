@@ -1,3 +1,5 @@
+using Assets.Scripts.Common;
+using Assets.Scripts.Manager;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,18 +13,27 @@ namespace Assets.Scripts.Object
     }
     public class Door : MonoBehaviour
     {
-        private DoorState _doorState = DoorState.DoorClose;
+        public DoorState DoorState {get { return _doorState; } }
+        protected DoorState _doorState = DoorState.DoorClose;
         private Animator _anim;
-
+        private AudioSource _audioSource;
         private void Awake()
         {
-            _anim = GetComponentInChildren<Animator>();
+            _anim = GetComponentInParent<Animator>();
+            _audioSource = GetComponent<AudioSource>();
         }
 
-        public void  DoorActive()
+        public void ForceCloseDoor()
+        {
+            if (_doorState == DoorState.DoorClose) return;
+            DoorActive();
+        }
+
+        public virtual void  DoorActive()
         {
             _doorState = _doorState == DoorState.DoorOpen ? DoorState.DoorClose : DoorState.DoorOpen;
             _anim.SetTrigger(_doorState.ToString());
+            _audioSource.Play();
         }
     }
 }

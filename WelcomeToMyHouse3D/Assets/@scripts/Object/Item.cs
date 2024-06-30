@@ -15,15 +15,21 @@ namespace Assets.Scripts.Object
         {
             _collider = GetComponent<CapsuleCollider>();
             this.gameObject.name.Replace("(Clone)", "");
-            SoundManager.Instance.PlaySound(SFXName.SFX_ItemDrop);
         }
 
-        private void OnTriggerEnter(Collider other)
+        private void Start()
+        {
+            if (PlayerViewModel.Instance.PlayerData.ItemList.Contains(_itemName))
+                this.gameObject.SetActive(false);
+        }
+
+        protected virtual void OnTriggerEnter(Collider other)
         {
             if(other.CompareTag("Player"))
             {
                 _collider.enabled = false;
                 PlayerViewModel.Instance.AddItem(_itemName);
+                SoundManager.Instance.PlaySound(SFXName.SFX_GetItem);
                 UIManager.Instance.Show(PopupStyle.ItemShow);
                 gameObject.SetActive(false);
             }

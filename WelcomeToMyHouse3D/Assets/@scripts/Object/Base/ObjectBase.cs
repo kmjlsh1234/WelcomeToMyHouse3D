@@ -9,7 +9,6 @@ namespace Assets.Scripts.Object.Base
 {
     public class ObjectBase : MonoBehaviour
     {
-        [SerializeField] protected ObjectType _objectType = ObjectType.NotChoiceObject;
         [SerializeField] protected ItemName _needItemName = ItemName.None;
         [SerializeField] private SFXName _sfxName = SFXName.None;
 
@@ -17,10 +16,12 @@ namespace Assets.Scripts.Object.Base
         {
             if (_sfxName != SFXName.None)
                 SoundManager.Instance.PlaySound(_sfxName);
+
         }
         public virtual void ChoiceAEvent() { }
         public virtual void ChoiceBEvent() { }
 
+        public virtual void UseItemEvent(ItemName itemName) { }
         public bool CheckItem()
         {
             var isRegist = PlayerViewModel.Instance.PlayerData.ItemList.Contains(_needItemName);
